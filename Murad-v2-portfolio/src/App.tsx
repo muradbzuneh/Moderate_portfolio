@@ -1,9 +1,8 @@
+import Home from "./Pages/Home"
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-red-100">
-      <h1 className="text-4xl font-bold text-white">
-        Tailwind v3 Works 🚀
-      </h1>
+    <div className=" mx-10  min-h-screen  bg-slate-000">
+    <Home />
     </div>
   )
 }
