@@ -26,14 +26,13 @@ export function Hero() {
       </h2>
 
       <div className="flex gap-4">
-        <a
-          href="#projects"
-          className=" flex gap-2 rounded-md bg-cyan-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600"
-        >
-          Download CV <FolderDownArrow /> 
-            
-        
-        </a>
+       <a
+  href="/Murad_Bzuneh_CV.pdf"
+  download
+  className="flex items-center gap-2 rounded-md bg-cyan-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600 transition"
+>
+  Download CV <FolderDownArrow />
+</a>
 
         <a
           href="#contact"
