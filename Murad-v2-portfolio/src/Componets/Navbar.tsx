@@ -1,5 +1,4 @@
 import Hero from "../assets/imgs/Logo2.jpg"
-import sun from "../assets/imgs/sun.svg"
 
 const Navbar = () => {
   return (
@@ -10,7 +9,7 @@ const Navbar = () => {
       </div>
       <div>
 <ul className="flex gap-10 text-xl">
-  <li className="hover:text-cyan-200">About</li>
+  <li className="hover:text-cyan-400">About</li>
   <li className="hover:text-cyan-400"> Skills</li>
   <li className="hover:text-cyan-400">Projects</li>
   <li className="hover:text-cyan-400">Contact</li>
