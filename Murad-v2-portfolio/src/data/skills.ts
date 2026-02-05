@@ -1,27 +1,45 @@
+import {
+  SiHtml5,
+  SiCss3,
+  SiJavascript,
+  SiTypescript,
+  SiReact,
+  SiTailwindcss,
+  SiNodedotjs,
+  SiExpress,
+  SiFirebase,
+  SiGit,
+  SiGithub,
+  SiVite,
+  SiMysql,
+  SiPostgresql,
+  SiMongodb
+} from "react-icons/si";
+
 export const skills = {
   frontend: [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Tailwind CSS",
+    { name: "HTML", icon: SiHtml5 },
+    { name: "CSS", icon: SiCss3 },
+    { name: "JavaScript", icon: SiJavascript },
+    { name: "TypeScript", icon: SiTypescript },
+    { name: "React", icon: SiReact },
+    { name: "Tailwind", icon: SiTailwindcss },
   ],
   backend: [
-    "Node.js",
-    "Express",
-    "Firebase",
-    "REST APIs",
+    { name: "Node.js", icon: SiNodedotjs },
+    { name: "Express", icon: SiExpress },
+    { name: "Firebase", icon: SiFirebase },
   ],
-  database:[
-"MySQL",
-"PostgressSQL",
-"Firebase"
+   Database: [
+    { name: "Mysql", icon: SiMysql },
+    { name: "Postgresssql", icon: SiPostgresql },
+     { name: "Mongodb", icon: SiMongodb }
+
+
   ],
   tools: [
-    "Git",
-    "GitHub",
-    "Vite",
-    "VS Code",
+    { name: "Git", icon: SiGit },
+    { name: "GitHub", icon: SiGithub },
+    { name: "Vite", icon: SiVite },
   ],
 };

@@ -1,7 +1,8 @@
 import hero from "../assets/imgs/Hero.jpg"
+import { FolderDownArrow } from "@boxicons/react"
 export function Hero() {
     return(
-        <section className="items-center  flex min-h-[90vh] max-w-6xl flex-col justify-center px-6">
+        <section className="mx-auto items-center py-24 flex min-h-[90vh] max-w-6xl flex-col justify-center px-6">
     <div className="relative w-60 h-60 mb-8 mt-4">
   {/* rotating border layer */}
   <div className="absolute inset-0 rounded-full border-4 border-cyan-400 animate-spin-slow" />
@@ -10,7 +11,7 @@ export function Hero() {
   <img
     src={hero}
     alt="Murad profile"
-    className="relative z-10 w-full h-full rounded-full object-cover items-center"
+    className="relative z-10 w-full h-full rounded-2xl object-cover items-center"
   />
 </div>
        
@@ -27,16 +28,18 @@ export function Hero() {
       <div className="flex gap-4">
         <a
           href="#projects"
-          className="rounded-md bg-cyan-500 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600"
+          className=" flex gap-2 rounded-md bg-cyan-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600"
         >
-          View Projects
+          Download CV <FolderDownArrow /> 
+            
+        
         </a>
 
         <a
           href="#contact"
           className="rounded-md border border-slate-700 px-6 py-3 text-sm font-medium text-slate-200 hover:border-cyan-500"
         >
-          Contact Me
+          Let's connect
         </a>
       </div>
     </section>
