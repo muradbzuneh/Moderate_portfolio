@@ -27,7 +27,7 @@ export function Hero() {
 
       <div className="flex gap-4">
        <a
-  href="/Murad_Bzuneh_CV.pdf"
+  href="/Murad_Bzuneh_Fullstack-Developer_CV.pdf"
   download
   className="flex items-center gap-2 rounded-md bg-cyan-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-600 transition"
 >

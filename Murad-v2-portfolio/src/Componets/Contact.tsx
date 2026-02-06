@@ -80,7 +80,7 @@ const Contact = () => {
             type="submit"
             className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold py-3 rounded-lg transition-transform hover:scale-[1.02]"
           >
-            Send Message 🚀
+            Send Message 
           </button>
         </form>
       </div>
