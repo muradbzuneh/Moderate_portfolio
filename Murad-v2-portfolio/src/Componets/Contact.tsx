@@ -13,12 +13,22 @@ const Contact = () => {
 
     if (!formRef.current) return;
 
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      alert("EmailJS configuration is missing. Please check your .env file.");
+      console.error("Missing EmailJS credentials");
+      return;
+    }
+
     emailjs
       .sendForm(
-        "service_u8trdze",
-        "template_6wwmcto",
+        serviceId,
+        templateId,
         formRef.current,
-        "qUdiajeePSPR9AduZ"
+        publicKey
       )
       .then(
         () => {
@@ -27,7 +37,7 @@ const Contact = () => {
         },
         (error) => {
           alert("Failed to send message ❌");
-          console.error(error);
+          console.error("EmailJS Error:", error);
         }
       );
   };
@@ -87,7 +97,7 @@ const Contact = () => {
               rows={5}
               placeholder="Your Message"
               required
-              className="bg-gray-800 border w-4/6 border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none resize-none"
+              className="bg-gray-800 border w-full border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none resize-none"
             />
 
             <button
