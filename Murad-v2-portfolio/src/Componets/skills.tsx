@@ -1,11 +1,30 @@
 import { skills } from "../data/skills";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const Skills = () => {
-  return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
-      <h2 className="mb-12 text-3xl font-bold text-cyan-400">Experiance</h2>
+  const { ref: headingRef, isVisible: headingVisible } = useScrollAnimation(0.1);
+  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation(0.2);
 
-      <div className="grid gap-8 md:grid-cols-3">
+  return (
+    <section 
+      id="skills" 
+      className="mx-auto max-w-6xl px-6 py-24"
+    >
+      <h2 
+        ref={headingRef as React.RefObject<HTMLHeadingElement>}
+        className={`mb-12 text-3xl font-bold text-cyan-400 transition-all duration-1000 ${
+          headingVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+        }`}
+      >
+        Experiance
+      </h2>
+
+      <div 
+        ref={gridRef as React.RefObject<HTMLDivElement>}
+        className={`grid gap-8 md:grid-cols-3 transition-all duration-1000 ${
+          gridVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
         {Object.entries(skills).map(([category, items]) => (
           <div
             key={category}

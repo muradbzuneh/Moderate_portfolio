@@ -2,7 +2,7 @@ import hero from "../assets/imgs/Hero.jpg"
 import { FolderDownArrow } from "@boxicons/react"
 export function Hero() {
     return(
-        <section className="mx-auto items-center py-24 flex min-h-[90vh] max-w-6xl flex-col justify-center px-6">
+        <section id ="projects"className="mx-auto items-center py-24 flex min-h-[90vh] max-w-6xl flex-col justify-center px-6">
     <div className="relative w-60 h-60 mb-8 mt-4">
   {/* rotating border layer */}
   <div className="absolute inset-0 rounded-full border-4 border-cyan-400 animate-spin-slow" />
