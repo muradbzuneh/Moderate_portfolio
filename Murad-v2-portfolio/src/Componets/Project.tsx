@@ -28,6 +28,7 @@ const Projects = () => {
         <p className="text-slate-600 dark:text-slate-400 text-lg">
           A collection of my recent work and side projects
         </p>
+        <p className="text-red-600 text-sm">i'm not use main project i will replace it by real wep all</p>
       </div>
 
       {/* Filter buttons */}

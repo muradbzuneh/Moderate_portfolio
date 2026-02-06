@@ -1,9 +1,24 @@
 # 🚀 Vercel Deployment Checklist
 
+## ⚠️ CRITICAL FIX: "vite: command not found" Error
+
+If you encounter this error during deployment:
+
+### Solution:
+1. Go to **Vercel Dashboard** → Your Project → **Settings**
+2. Navigate to **Build & Development Settings**
+3. Configure:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+   - **Node.js Version**: `20.x`
+4. **Save** and **Redeploy**
+
 ## ✅ Pre-Deployment Status
 
 ### Build & Code Quality
-- [x] **Build Successful**: ✓ Built in 4.50s
+- [x] **Build Successful**: ✓ Built in 5.34s
 - [x] **No TypeScript Errors**: All files pass type checking
 - [x] **No ESLint Errors**: Code quality verified
 - [x] **All Components Working**: Tested locally
@@ -13,13 +28,13 @@
 - [x] **Contact Form**: EmailJS integration ready
 
 ### Files & Configuration
-- [x] **package.json**: All dependencies listed
+- [x] **package.json**: Fixed (removed problematic "node" package)
 - [x] **vite.config.ts**: Build config optimized
-- [x] **vercel.json**: SPA routing configured
+- [x] **vercel.json**: Simplified SPA routing
 - [x] **.gitignore**: Excludes sensitive files
 - [x] **.env**: EmailJS credentials (local only)
 - [x] **README.md**: Documentation complete
-- [x] **DEPLOYMENT.md**: Deployment guide ready
+- [x] **DEPLOYMENT.md**: Updated with fix
 
 ### Assets
 - [x] **Images**: All in /public folder
@@ -35,8 +50,21 @@
 
 ## 🔧 Required Actions Before Deploy
 
-### 1. Environment Variables (CRITICAL!)
-You MUST add these to Vercel dashboard:
+### 1. Configure Vercel Build Settings (CRITICAL!)
+
+In Vercel Dashboard → Settings → Build & Development Settings:
+
+```
+Framework Preset: Vite
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
+Node.js Version: 20.x
+```
+
+### 2. Environment Variables (CRITICAL!)
+
+Add these in Vercel Dashboard → Settings → Environment Variables:
 
 ```
 VITE_EMAILJS_SERVICE_ID=service_u8trdze
@@ -44,14 +72,9 @@ VITE_EMAILJS_TEMPLATE_ID=template_xp0oudn
 VITE_EMAILJS_PUBLIC_KEY=qUdiajeePSPR9AduZ
 ```
 
-**How to add in Vercel:**
-1. Go to Project Settings
-2. Click "Environment Variables"
-3. Add each variable above
-4. Select "Production", "Preview", and "Development"
-5. Click "Save"
+**Important**: Select **Production**, **Preview**, AND **Development** for each variable!
 
-### 2. Update Personal Links (Optional)
+### 3. Update Personal Links (Optional)
 Before deploying, update these if needed:
 
 - [ ] GitHub links in `src/data/project.ts`
@@ -59,7 +82,7 @@ Before deploying, update these if needed:
 - [ ] Social media links in `src/Componets/Footer.tsx`
 - [ ] CV file in `/public` folder
 
-### 3. Git Repository (If using GitHub)
+### 4. Git Repository (If using GitHub)
 - [ ] Initialize Git: `git init`
 - [ ] Add files: `git add .`
 - [ ] Commit: `git commit -m "Ready for deployment"`
@@ -68,7 +91,19 @@ Before deploying, update these if needed:
 
 ## 🚀 Deployment Methods
 
-### Method 1: Vercel CLI (Fastest)
+### Method 1: Vercel Dashboard (Recommended - Easiest)
+
+1. **Push to GitHub** (if not done)
+2. **Go to** https://vercel.com/
+3. **Click** "Add New Project"
+4. **Import** your GitHub repository
+5. **Configure Build Settings** (see above)
+6. **Add Environment Variables** (see above)
+7. **Click** "Deploy"
+8. **Wait** 2-3 minutes
+
+### Method 2: Vercel CLI (Advanced)
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -80,26 +115,19 @@ vercel login
 cd Murad-v2-portfolio
 vercel
 
+# Configure when prompted:
+# - Build Command: npm run build
+# - Output Directory: dist
+# - Development Command: npm run dev
+
 # Add environment variables
-vercel env add VITE_EMAILJS_SERVICE_ID
-vercel env add VITE_EMAILJS_TEMPLATE_ID
-vercel env add VITE_EMAILJS_PUBLIC_KEY
+vercel env add VITE_EMAILJS_SERVICE_ID production
+vercel env add VITE_EMAILJS_TEMPLATE_ID production
+vercel env add VITE_EMAILJS_PUBLIC_KEY production
 
 # Deploy to production
 vercel --prod
 ```
-
-### Method 2: Vercel Dashboard (Easiest)
-1. Push code to GitHub
-2. Go to https://vercel.com/
-3. Click "Add New Project"
-4. Import your GitHub repository
-5. Configure:
-   - Framework: Vite
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-6. Add environment variables
-7. Click "Deploy"
 
 ## ✅ Post-Deployment Testing
 
@@ -126,7 +154,7 @@ dist/assets/Logo2-EoalqpOa.jpg    39.88 kB
 dist/assets/Hero-COR4q1ld.jpg    229.11 kB
 dist/assets/index-Dp8bY-Wo.css    24.50 kB
 dist/assets/index-D1PFTTEe.js    250.92 kB
-✓ built in 4.50s
+✓ built in 5.34s
 ```
 
 ### Deployment Time
@@ -138,13 +166,33 @@ dist/assets/index-D1PFTTEe.js    250.92 kB
 - **First Contentful Paint**: < 1.5s
 - **Time to Interactive**: < 3s
 
+## 🐛 Common Issues & Solutions
+
+### Issue: "vite: command not found"
+**Solution**: Configure build settings in Vercel Dashboard (see top of this file)
+
+### Issue: Contact form not working
+**Solution**: Verify all 3 environment variables are added in Vercel
+
+### Issue: Images not loading
+**Solution**: Check images are in `/public` and paths start with `/`
+
+### Issue: 404 on page refresh
+**Solution**: Verify `vercel.json` exists with rewrites configuration
+
 ## 🎯 Your Portfolio is Ready!
 
 **Status**: ✅ **READY TO DEPLOY**
 
-All checks passed! Your portfolio is production-ready and can be deployed to Vercel immediately.
+All checks passed! Your portfolio is production-ready.
 
-Choose your deployment method above and follow the steps. Your site will be live in minutes!
+**Important Reminders:**
+1. ✅ Configure build settings in Vercel Dashboard
+2. ✅ Add all 3 environment variables
+3. ✅ Select all environments (Production, Preview, Development)
+4. ✅ Deploy!
+
+**Your site will be live at**: `https://your-project-name.vercel.app`
 
 ---
 
