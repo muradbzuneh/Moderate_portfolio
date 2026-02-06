@@ -22,10 +22,10 @@ const Projects = () => {
       }`}
     >
       <div className="mb-12 text-center">
-        <h2 className="mb-4 text-4xl font-bold">
+        <h2 className="mb-4 text-4xl font-bold text-slate-800 dark:text-white">
           Featured <span className="text-cyan-400">Projects</span>
         </h2>
-        <p className="text-slate-400 text-lg">
+        <p className="text-slate-600 dark:text-slate-400 text-lg">
           A collection of my recent work and side projects
         </p>
       </div>
@@ -39,7 +39,7 @@ const Projects = () => {
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
               filter === category
                 ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/50'
-                : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
+                : 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
             }`}
           >
             {category}

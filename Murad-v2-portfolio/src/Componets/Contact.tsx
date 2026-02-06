@@ -46,7 +46,7 @@ const Contact = () => {
     <>
     <section
       id="contact"
-      className="min-h-screen bg-gray-800 rounded-3xl text-white flex items-center justify-center px-6"
+      className="min-h-screen bg-slate-200 dark:bg-gray-800 rounded-3xl text-slate-800 dark:text-white flex items-center justify-center px-6"
     >
       <div className="w-full max-w-4xl">
         <div 
@@ -55,10 +55,10 @@ const Contact = () => {
             headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
           }`}
         >
-          <h2 className="text-4xl font-bold mb-4">
+          <h2 className="text-4xl font-bold mb-4 text-slate-800 dark:text-white">
             Let's <span className="text-cyan-400">Connect</span>
           </h2>
-          <p className="text-gray-400">
+          <p className="text-slate-600 dark:text-gray-400">
             Send me a message — I'll actually receive it.
           </p>
         </div>
@@ -72,7 +72,7 @@ const Contact = () => {
           <form
             ref={formRef}
             onSubmit={sendEmail}
-            className="bg-gray-900 rounded-2xl p-8 space-y-6"
+            className="bg-white dark:bg-gray-900 rounded-2xl p-8 space-y-6 shadow-xl"
           >
             <div className="grid md:grid-cols-2 gap-6">
               <input
@@ -80,7 +80,7 @@ const Contact = () => {
                 name="name"
                 placeholder="Your Name"
                 required
-                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none"
+                className="bg-slate-100 dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none text-slate-800 dark:text-white transition-colors"
               />
 
               <input
@@ -88,7 +88,7 @@ const Contact = () => {
                 name="email"
                 placeholder="Your Email"
                 required
-                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none"
+                className="bg-slate-100 dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none text-slate-800 dark:text-white transition-colors"
               />
             </div>
 
@@ -97,12 +97,12 @@ const Contact = () => {
               rows={5}
               placeholder="Your Message"
               required
-              className="bg-gray-800 border w-full border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none resize-none"
+              className="bg-slate-100 dark:bg-gray-800 border w-full border-slate-300 dark:border-gray-700 rounded-lg px-4 py-3 focus:border-cyan-400 outline-none resize-none text-slate-800 dark:text-white transition-colors"
             />
 
             <button
               type="submit"
-              className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold py-3 rounded-lg transition-transform hover:scale-[1.02]"
+              className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-semibold py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-cyan-500/50"
             >
               Send Message 
             </button>
