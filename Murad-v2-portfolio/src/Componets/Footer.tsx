@@ -1,4 +1,4 @@
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaInstagram, FaTwitter,  FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -11,19 +11,44 @@ const Footer = () => {
 
         <div className="flex gap-6 text-slate-400">
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/muradbzuneh"
             target="_blank"
-            className="transition hover:text-white"
+            className="transition hover:text-cyan-300"
           >
             <FaGithub size={18} />
           </a>
 
           <a
-            href="https://linkedin.com/in/yourusername"
+            href="https://linkedin.com/in/murad-bzuneh"
             target="_blank"
-            className="transition hover:text-white"
+            className="transition hover:text-cyan-300"
           >
             <FaLinkedin size={18} />
+          </a>
+
+           <a
+            href="https://instagram.com/muradina_16"
+            target="_blank"
+            className="transition hover:text-cyan-300"
+          >
+            <FaInstagram size={18} />
+
+          
+          </a>
+          <a
+            href="https://x.com/MuradBzuneh"
+            target="_blank"
+            className="transition hover:text-cyan-300"
+          >
+            <FaTwitter size={18} />
+          </a>
+       
+          <a
+            href="https://wa.me/qr/2LC2XHRVIYJ7I1"
+            target="_blank"
+            className="transition hover:text-cyan-300"
+          >
+            <FaWhatsapp size={18} />
           </a>
         </div>
       </div>
