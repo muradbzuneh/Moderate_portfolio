@@ -1,3 +1,4 @@
+import { Netlify, NextJs, Npm, Vercel } from "@boxicons/react";
 import {
   SiHtml5,
   SiCss3,
@@ -13,7 +14,9 @@ import {
   SiVite,
   SiMysql,
   SiPostgresql,
-  SiMongodb
+  SiMongodb,
+  SiRender,
+  SiPnpm
 } from "react-icons/si";
 
 export const skills = {
@@ -26,6 +29,7 @@ export const skills = {
     { name: "Tailwind", icon: SiTailwindcss },
   ],
   backend: [
+    { name: "NEXTJs", icon: NextJs },
     { name: "Node.js", icon: SiNodedotjs },
     { name: "Express", icon: SiExpress },
     { name: "Firebase", icon: SiFirebase },
@@ -33,7 +37,8 @@ export const skills = {
    Database: [
     { name: "Mysql", icon: SiMysql },
     { name: "Postgresssql", icon: SiPostgresql },
-     { name: "Mongodb", icon: SiMongodb }
+     { name: "Mongodb", icon: SiMongodb },
+     {name: "superbase", icon: SiMongodb}
 
 
   ],
@@ -41,5 +46,12 @@ export const skills = {
     { name: "Git", icon: SiGit },
     { name: "GitHub", icon: SiGithub },
     { name: "Vite", icon: SiVite },
+    {name: "npm", icon: Npm},
+    {name: "pnpm", icon: SiPnpm}
   ],
+deployment : [
+  { name: "Vercel", icon: Vercel },
+  { name: "Netlify", icon: Netlify },
+  { name: "Render", icon: SiRender },
+]
 };
