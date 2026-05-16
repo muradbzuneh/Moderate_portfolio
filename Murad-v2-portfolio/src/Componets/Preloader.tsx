@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import hero from "../assets/imgs/Hero.jpg";
+
 
 const Preloader = () => {
   const [loading, setLoading] = useState(true);
@@ -49,11 +49,7 @@ const Preloader = () => {
           
           {/* Hero image inside */}
           <div className="absolute inset-2 rounded-full overflow-hidden">
-            <img
-              src={hero}
-              alt="Murad"
-              className="w-full h-full object-cover"
-            />
+            <h1 className ="text-cycan font-camberia ">Murad</h1>
           </div>
         </div>
         

@@ -1,4 +1,3 @@
-import hero from "../assets/imgs/Hero.jpg"
 import { FolderDownArrow } from "@boxicons/react"
 import { useEffect, useState } from "react"
 
@@ -42,7 +41,7 @@ export function Hero() {
 
             {/* static image layer */}
             <img
-              src={hero}
+            src=""
               alt="Murad profile"
               className="relative z-10 w-full h-full rounded-2xl object-cover items-center transform transition-transform duration-500 group-hover:scale-105"
             />
