@@ -16,7 +16,11 @@ import {
   SiPostgresql,
   SiMongodb,
   SiRender,
-  SiPnpm
+  SiPnpm,
+  SiDocker,
+  SiNextdotjs,
+  SiRailway,
+  SiHeroku
 } from "react-icons/si";
 
 export const skills = {
@@ -33,12 +37,15 @@ export const skills = {
     { name: "Node.js", icon: SiNodedotjs },
     { name: "Express", icon: SiExpress },
     { name: "Firebase", icon: SiFirebase },
+    {name: "Nextjs", icon:SiNextdotjs}
   ],
    Database: [
     { name: "Mysql", icon: SiMysql },
     { name: "Postgresssql", icon: SiPostgresql },
      { name: "Mongodb", icon: SiMongodb },
-     {name: "superbase", icon: SiMongodb}
+     { name: "superbase", icon: SiMongodb }
+    
+     
 
 
   ],
@@ -47,11 +54,14 @@ export const skills = {
     { name: "GitHub", icon: SiGithub },
     { name: "Vite", icon: SiVite },
     {name: "npm", icon: Npm},
-    {name: "pnpm", icon: SiPnpm}
+    { name: "pnpm", icon: SiPnpm },
+    {name:"Docker", icon: SiDocker}
   ],
 deployment : [
   { name: "Vercel", icon: Vercel },
   { name: "Netlify", icon: Netlify },
   { name: "Render", icon: SiRender },
+  { name: "Railway", icon: SiRailway },
+  {name:"Heroku", icon:SiHeroku}
 ]
 };
