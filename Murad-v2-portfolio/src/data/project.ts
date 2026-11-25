@@ -1,6 +1,6 @@
 export const projects = [
   {
-    title: "Proshe App",
+    title: "Proshe",
     description:
       "ProShe connects diaspora investors with verified workers through trusted banks. Fund real startup packages, share profits transparently, and grow communities — no Riba, ever..",
     tech: ["React", "TypeScript", "neon", "express", "Tailwind"],
@@ -46,13 +46,13 @@ export const projects = [
     image: "/Project1.jpg",
   },
   {
-  title: "Estud App",
+  title: "Estud",
   description:
     "A full-stack campus management platform that centralizes student services including announcements, cafeteria reservations, and a marketplace. Implements authentication, role-based authorization, and scalable architecture with a clean, user-friendly interface.",
   tech: ["React", "TypeScript", "Tailwind CSS", "Express", "MongoDB"],
   github: "https://github.com/muradbzuneh/Estud",
   live: "https://your-estud-app.vercel.app/",
-  image: "/estud-dashboard.jpg",
+  image: "/estud-banner.jpg",
 }
 
 ];
