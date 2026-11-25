@@ -14,8 +14,8 @@ export const projects = [
     description: "A fullstack cosmetics e-commerce platform built with Express, React, and PostgreSQL.",
     tech: ["React", "Express", "PostgreSQL", "Tailwind"],
     github: "https://github.com/muradbzuneh/codeAlpha_Cosmot_app",
-    live: "https://code-alpha-cosmot-app.vercel.app/",
-    image: "/cosmot-logo-dark.png",
+    live: "https://cosmot-app.vercel.app",
+    image: "/cosmot-banner.png",
   },
 
   {
@@ -25,9 +25,17 @@ export const projects = [
     tech: ["React", "tanstack", "docker", "betterAuth", "TypeScript","express", "Tailwind"],
     github: "https://github.com/muradbzuneh/codeAlpha-Enj",
     live: "https://code-alpha-enj-web.vercel.app/",
-    image: "/enj-emojt.png",
+    image: "/enj-mobile-view.jpg",
   },
-
+  {
+    title: "Drug Tracker",
+    description:
+      "A full-stack medicine management and health tracking platform featuring a searchable medicine catalogue, personalized medication schedules, dose tracking, prescription requests, pharmacist communication, and health education. Built with Next.js and TypeScript, featuring a clean, responsive interface.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Prisma", "NextAuth.js", "Cloudinary"],
+    github: "https://github.com/muradbzuneh/MB_Drug_Tracker",
+    live: "https://mb-drug.vercel.app",
+    image: "/drug-rukker-banner.png",
+  },
   {
     title: "Food Delivery App",
     description:
@@ -37,16 +45,6 @@ export const projects = [
     live: "https://mb-food-delivery-project.vercel.app/",
     image: "/Project1.jpg",
   },
-
-  {
-  title: "Fitness Tracker App",
-  description:
-  "A full-stack fitness tracking app featuring calorie logging, activity tracking, BMI calculation, and interactive dashboards. Built to improve TypeScript performance and UI design skills with a clean, responsive interface.",
-  tech: ["React", "TypeScript", "Tailwind CSS", "Context API"],
-  github: "https://github.com/muradbzuneh/Tracker_clone",
-  live: "https://tracker-clone-7t5l.vercel.app/",
-  image: "/Discover Creative CRM panel.jpg",
-},
   {
   title: "Estud App",
   description:
