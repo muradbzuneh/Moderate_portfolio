@@ -11,7 +11,8 @@ export function Hero() {
   const roles = [
     "Frontend Developer",
     "Backend Developer",
-    "UI/UX Enthusiast",
+    "AI Integration",
+    "Mobile app develper",
     "Fullstack Engineer"
   ];
 
@@ -58,7 +59,7 @@ export function Hero() {
         <img
           src={hero}
           alt="Murad profile"
-          className="relative z-10 w-full h-full rounded-full object-cover ring-4 ring-white dark:ring-slate-900 shadow-2xl transform transition-transform duration-500 group-hover:scale-105"
+          className="relative z-10 w-full h-full rounded-2xl object-cover ring-4 ring-white dark:ring-slate-900 shadow-2xl transform transition-transform duration-500 group-hover:scale-105"
         />
       </motion.div>
 

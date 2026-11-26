@@ -43,7 +43,7 @@ const Preloader = () => {
       }`}
     >
       <div className="text-center">
-        <div className="relative w-40 h-40 mx-auto mb-8">
+        <div className="relative w-60 h-60 mx-auto mb-10">
           {/* Rotating border */}
           <div className="absolute inset-0 rounded-full border-4 border-cyan-400 border-t-transparent animate-spin"></div>
           

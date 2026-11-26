@@ -51,7 +51,7 @@ export const projects = [
     "A full-stack campus management platform that centralizes student services including announcements, cafeteria reservations, and a marketplace. Implements authentication, role-based authorization, and scalable architecture with a clean, user-friendly interface.",
   tech: ["React", "TypeScript", "Tailwind CSS", "Express", "MongoDB"],
   github: "https://github.com/muradbzuneh/Estud",
-  live: "https://your-estud-app.vercel.app/",
+  live: "https://estud-v-2-9clb.vercel.app",
   image: "/estud-banner.jpg",
 }
 

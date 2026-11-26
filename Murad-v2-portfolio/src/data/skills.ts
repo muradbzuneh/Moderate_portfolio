@@ -1,4 +1,4 @@
-import { Netlify, NextJs, Npm, Vercel, Python, Java, Php } from "@boxicons/react";
+import { Netlify, NextJs, Npm, Vercel, Python,Django, Java, Php } from "@boxicons/react";
 import {
   SiHtml5,
   SiCss3,
@@ -18,7 +18,6 @@ import {
   SiRender,
   SiPnpm,
   SiDocker,
-  SiNextdotjs,
   SiRailway,
   SiHeroku,
   SiCplusplus
@@ -38,13 +37,13 @@ export const skills = {
     { name: "Node.js", icon: SiNodedotjs },
     { name: "Express", icon: SiExpress },
     { name: "Firebase", icon: SiFirebase },
-    {name: "Nextjs", icon:SiNextdotjs}
+    {name: "Django", icon:Django}
   ],
    Database: [
     { name: "Mysql", icon: SiMysql },
     { name: "Postgresssql", icon: SiPostgresql },
      { name: "Mongodb", icon: SiMongodb },
-     { name: "superbase", icon: SiMongodb }
+     { name: "supabase", icon: SiMongodb }
   ],
   tools: [
     { name: "Git", icon: SiGit },
