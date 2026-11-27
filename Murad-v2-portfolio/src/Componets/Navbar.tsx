@@ -1,31 +1,22 @@
 import { useEffect, useState } from "react";
-import Hero from "../assets/imgs/Logo2.jpg";
+import LogoImg from "../assets/imgs/Logo2.jpg";
 import { useTheme } from "../context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Sparkles, ArrowUpRight } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 2800);
-
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
@@ -39,10 +30,10 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={isVisible ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      initial={{ y: -24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
           ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-xl shadow-cyan-500/5 border-b border-slate-200/80 dark:border-slate-800/80 py-3.5"
           : "bg-transparent py-6"
@@ -58,9 +49,9 @@ const Navbar = () => {
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 blur-md opacity-70 group-hover:opacity-100 transition-opacity" />
               <img
-                src={Hero}
+                src={LogoImg}
                 className="relative rounded-full w-11 h-11 object-cover ring-2 ring-cyan-400 shadow-md"
-                alt="Logo"
+                alt="Murad Bzuneh logo"
               />
             </div>
             <div className="flex flex-col">

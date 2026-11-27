@@ -1,10 +1,11 @@
-import { Netlify, NextJs, Npm, Vercel, Python,Django, Java, Php } from "@boxicons/react";
+import { Netlify, Npm, Vercel, Python, Django, Java, Php, Expo, Flutter, ReactIcon } from "@boxicons/react";
 import {
   SiHtml5,
   SiCss3,
   SiJavascript,
   SiTypescript,
   SiReact,
+  SiNextdotjs,
   SiTailwindcss,
   SiNodedotjs,
   SiExpress,
@@ -15,55 +16,59 @@ import {
   SiMysql,
   SiPostgresql,
   SiMongodb,
+  SiSupabase,
   SiRender,
   SiPnpm,
   SiDocker,
   SiRailway,
   SiHeroku,
-  SiCplusplus
+  SiCplusplus,
 } from "react-icons/si";
 
 export const skills = {
-  frontend: [
-    { name: "HTML", icon: SiHtml5 },
-    { name: "CSS", icon: SiCss3 },
-    { name: "JavaScript", icon: SiJavascript },
-    { name: "TypeScript", icon: SiTypescript },
-    { name: "React", icon: SiReact },
-    { name: "Tailwind", icon: SiTailwindcss },
+  Frontend: [
+    { name: "HTML5", icon: SiHtml5, colorClass: "text-[#E34F26]" },
+    { name: "CSS3", icon: SiCss3, colorClass: "text-[#1572B6]" },
+    { name: "JavaScript", icon: SiJavascript, colorClass: "text-[#EAB308] dark:text-[#F7DF1E]" },
+    { name: "TypeScript", icon: SiTypescript, colorClass: "text-[#3178C6]" },
+    { name: "React", icon: SiReact, colorClass: "text-[#0891B2] dark:text-[#61DAFB]" },
+    { name: "Next.js", icon: SiNextdotjs, colorClass: "text-slate-900 dark:text-white" },
+    { name: "Tailwind CSS", icon: SiTailwindcss, colorClass: "text-[#06B6D4]" },
   ],
-  backend: [
-    { name: "NEXTJs", icon: NextJs },
-    { name: "Node.js", icon: SiNodedotjs },
-    { name: "Express", icon: SiExpress },
-    { name: "Firebase", icon: SiFirebase },
-    {name: "Django", icon:Django}
+  Backend: [
+    { name: "Node.js", icon: SiNodedotjs, colorClass: "text-[#339933] dark:text-[#5FA04E]" },
+    { name: "Express", icon: SiExpress, colorClass: "text-slate-800 dark:text-slate-100" },
+    { name: "Django", icon: Django, colorClass: "text-[#092E20] dark:text-[#44B78B]" },
+    { name: "Firebase", icon: SiFirebase, colorClass: "text-[#F59E0B] dark:text-[#FFCA28]" },
+    { name: "Python", icon: Python, colorClass: "text-[#3776AB] dark:text-[#4B8BBE]" },
+    { name: "PHP", icon: Php, colorClass: "text-[#777BB4] dark:text-[#8892BF]" },
   ],
-   Database: [
-    { name: "Mysql", icon: SiMysql },
-    { name: "Postgresssql", icon: SiPostgresql },
-     { name: "Mongodb", icon: SiMongodb },
-     { name: "supabase", icon: SiMongodb }
+  Databases: [
+    { name: "PostgreSQL", icon: SiPostgresql, colorClass: "text-[#336791] dark:text-[#60A5FA]" },
+    { name: "MySQL", icon: SiMysql, colorClass: "text-[#00758F] dark:text-[#38BDF8]" },
+    { name: "MongoDB", icon: SiMongodb, colorClass: "text-[#47A248]" },
+    { name: "Supabase", icon: SiSupabase, colorClass: "text-[#10B981] dark:text-[#3ECF8E]" },
   ],
-  tools: [
-    { name: "Git", icon: SiGit },
-    { name: "GitHub", icon: SiGithub },
-    { name: "Vite", icon: SiVite },
-    {name: "npm", icon: Npm},
-    { name: "pnpm", icon: SiPnpm },
-    {name:"Docker", icon: SiDocker}
+  Mobile: [
+    { name: "Flutter", icon: Flutter, colorClass: "text-[#02569B] dark:text-[#38BDF8]" },
+    { name: "Expo", icon: Expo, colorClass: "text-slate-900 dark:text-white" },
+    { name: "React Native", icon: ReactIcon, colorClass: "text-[#0891B2] dark:text-[#61DAFB]" },
   ],
-  Programming: [
-  { name: "Python", icon: Python },
-  { name: "Java", icon: Java },
-  { name: "C++", icon: SiCplusplus},
-  { name: "PHP", icon: Php}
-],
-  deployment : [
-  { name: "Vercel", icon: Vercel },
-  { name: "Netlify", icon: Netlify },
-  { name: "Render", icon: SiRender },
-  { name: "Railway", icon: SiRailway },
-  {name:"Heroku", icon:SiHeroku}
-]
+  "DevOps & Cloud": [
+    { name: "Docker", icon: SiDocker, colorClass: "text-[#2496ED]" },
+    { name: "Vercel", icon: Vercel, colorClass: "text-slate-900 dark:text-white" },
+    { name: "Netlify", icon: Netlify, colorClass: "text-[#00AD9F] dark:text-[#00C7B7]" },
+    { name: "Render", icon: SiRender, colorClass: "text-[#059669] dark:text-[#46E3B7]" },
+    { name: "Railway", icon: SiRailway, colorClass: "text-slate-900 dark:text-white" },
+    { name: "Heroku", icon: SiHeroku, colorClass: "text-[#6762A6] dark:text-[#A78BFA]" },
+  ],
+  "Tools & Core": [
+    { name: "Git", icon: SiGit, colorClass: "text-[#F05032]" },
+    { name: "GitHub", icon: SiGithub, colorClass: "text-slate-900 dark:text-white" },
+    { name: "Vite", icon: SiVite, colorClass: "text-[#646CFF] dark:text-[#8B5CF6]" },
+    { name: "npm", icon: Npm, colorClass: "text-[#CB3837]" },
+    { name: "pnpm", icon: SiPnpm, colorClass: "text-[#F69220]" },
+    { name: "Java", icon: Java, colorClass: "text-[#EA580C] dark:text-[#FB923C]" },
+    { name: "C++", icon: SiCplusplus, colorClass: "text-[#00599C] dark:text-[#60A5FA]" },
+  ],
 };

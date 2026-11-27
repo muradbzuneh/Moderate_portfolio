@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
   const socials = [
-    { icon: <FaGithub size={20} />, href: "https://github.com/muradbzuneh" },
-    { icon: <FaLinkedin size={20} />, href: "https://linkedin.com/in/murad-bzuneh" },
-    { icon: <FaInstagram size={20} />, href: "https://instagram.com/muradina_16" },
-    { icon: <FaTwitter size={20} />, href: "https://x.com/MuradBzuneh" },
-    { icon: <FaWhatsapp size={20} />, href: "https://wa.me/qr/2LC2XHRVIYJ7I1" },
+    { label: "GitHub", icon: <FaGithub size={20} />, href: "https://github.com/muradbzuneh" },
+    { label: "LinkedIn", icon: <FaLinkedin size={20} />, href: "https://linkedin.com/in/murad-bzuneh" },
+    { label: "Instagram", icon: <FaInstagram size={20} />, href: "https://instagram.com/muradina_16" },
+    { label: "Twitter / X", icon: <FaTwitter size={20} />, href: "https://x.com/MuradBzuneh" },
+    { label: "WhatsApp", icon: <FaWhatsapp size={20} />, href: "https://wa.me/qr/2LC2XHRVIYJ7I1" },
   ];
 
   return (
@@ -18,15 +18,16 @@ const Footer = () => {
         </p>
 
         <div className="flex items-center gap-5 text-slate-600 dark:text-slate-400">
-          {socials.map((social, index) => (
+          {socials.map((social) => (
             <motion.a
-              key={index}
+              key={social.label}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={social.label}
               whileHover={{ scale: 1.2, y: -2 }}
               whileTap={{ scale: 0.9 }}
-              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800/80 hover:bg-cyan-500/10 hover:text-cyan-400 dark:hover:text-cyan-400 transition-colors border border-slate-200 dark:border-slate-700"
+              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800/80 hover:bg-cyan-500/10 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors border border-slate-200 dark:border-slate-700"
             >
               {social.icon}
             </motion.a>

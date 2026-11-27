@@ -7,19 +7,19 @@ export const About = () => {
 
   const stats = [
     {
-      icon: <HiAcademicCap className="text-cyan-400 text-3xl" />,
+      icon: <HiAcademicCap className="text-cyan-500 dark:text-cyan-400 text-3xl" />,
       title: "Education",
       desc: "Software Engineering\nWollo University",
     },
     {
-      icon: <HiBriefcase className="text-cyan-400 text-3xl" />,
+      icon: <HiBriefcase className="text-cyan-500 dark:text-cyan-400 text-3xl" />,
       title: "Experience",
-      desc: "3+ Years Experience\nCountless Projects",
+      desc: "3+ Years Building\n6+ Deployed Full-Stack Apps",
     },
     {
-      icon: <HiUser className="text-cyan-400 text-3xl" />,
-      title: "Profile",
-      desc: "Disciplined &\nHard-working Developer",
+      icon: <HiUser className="text-cyan-500 dark:text-cyan-400 text-3xl" />,
+      title: "Core Focus",
+      desc: "End-to-End Architecture,\nAPIs & Responsive UI",
     },
   ];
 
@@ -68,15 +68,20 @@ export const About = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 sm:p-10 shadow-xl"
         >
-          <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed space-y-4">
-            I'm a Full-Stack Developer and Software Engineering student passionate about building modern, responsive, maintainable, and scalable web applications.
-            <br /><br />
-            I work across the full development stack, using React, Next.js, TypeScript, and JavaScript to build intuitive user interfaces, and Node.js and Express.js to develop robust backend services and RESTful APIs.
-            <br /><br />
-            I have hands-on experience with relational and NoSQL databases, including PostgreSQL, MySQL, and MongoDB, as well as database tools and platforms such as Prisma ORM and Neon. I also work with Tailwind CSS for modern UI styling, Git and GitHub for version control and collaboration, and Docker for containerization and development workflows.
-            <br /><br />
-            My goal is to build reliable, well-structured software that solves real-world problems and delivers meaningful value to users.
-          </p>
+          <div className="space-y-4 text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p>
+              I'm a Full-Stack Developer and Software Engineering student focused on building responsive, maintainable, and scalable web and mobile applications.
+            </p>
+            <p>
+              Across the stack, I use React, Next.js, TypeScript, and Tailwind CSS to craft intuitive user interfaces, paired with Node.js and Express.js to architect secure backend services, authentication, and RESTful APIs.
+            </p>
+            <p>
+              I have hands-on experience with relational and NoSQL databases including PostgreSQL, MySQL, and MongoDB, alongside Prisma ORM, Neon, Git/GitHub workflows, and Docker containerization.
+            </p>
+            <p>
+              My focus is shipping reliable, well-structured software that solves real-world problems and delivers measurable value to users.
+            </p>
+          </div>
         </motion.div>
       </motion.div>
     </section>
