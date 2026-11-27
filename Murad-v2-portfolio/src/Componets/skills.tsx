@@ -22,7 +22,7 @@ const Skills = () => {
     <section
       id="skills"
       ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-7xl px-4 sm:px-6 py-24"
+      className="mx-auto max-w-6xl py-24"
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -70,28 +70,42 @@ const Skills = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: catIndex * 0.1 }}
               whileHover={{ y: -5 }}
-              className="shrink-0 w-[88%] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] snap-start rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 shadow-xl shadow-cyan-500/5 hover:border-cyan-500/50 transition-all group"
+              className="shrink-0 w-[90%] md:w-[calc((100%-1.5rem)/2)] snap-start rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 shadow-xl shadow-cyan-500/5 hover:border-cyan-500/50 transition-all group"
             >
               <h3 className="mb-6 text-lg font-bold text-slate-900 dark:text-white flex items-center justify-between">
                 <span>{category}</span>
                 <span className="w-2 h-2 rounded-full bg-cyan-400" />
               </h3>
 
-              <ul className="grid grid-cols-3 gap-4">
-                {items.map(({ name, icon: Icon, colorClass }, itemIndex) => (
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {items.map(({ name, icon: Icon, colorClass, level }, itemIndex) => (
                   <motion.li
                     key={name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.4, delay: catIndex * 0.08 + itemIndex * 0.04 }}
-                    whileHover={{ scale: 1.08, y: -3 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 hover:border-cyan-400 hover:bg-white dark:hover:bg-slate-800 transition-all cursor-default group/item"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                    transition={{ duration: 0.35, delay: catIndex * 0.06 + itemIndex * 0.03 }}
+                    className="flex flex-col gap-2 p-3 rounded-xl bg-slate-50/90 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 hover:border-cyan-400 hover:bg-white dark:hover:bg-slate-800 transition-all group/item"
                   >
-                    <Icon className={`text-2xl sm:text-3xl mb-1.5 transition-transform duration-200 group-hover/item:scale-110 ${colorClass}`} />
-                    <span className="text-[11px] sm:text-xs font-medium text-center truncate w-full">
-                      {name}
-                    </span>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Icon className={`text-xl shrink-0 transition-transform duration-200 group-hover/item:scale-110 ${colorClass}`} />
+                        <span className="text-xs font-semibold truncate">
+                          {name}
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 shrink-0">
+                        {level}%
+                      </span>
+                    </div>
+
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700/70">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={isVisible ? { width: `${level}%` } : { width: 0 }}
+                        transition={{ duration: 0.7, delay: catIndex * 0.08 + itemIndex * 0.04, ease: "easeOut" }}
+                        className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500"
+                      />
+                    </div>
                   </motion.li>
                 ))}
               </ul>

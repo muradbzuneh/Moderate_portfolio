@@ -39,7 +39,7 @@ const Navbar = () => {
           : "bg-transparent py-6"
       }`}
     >
-      <div className="flex justify-between items-center px-4 sm:px-8 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.05 }}

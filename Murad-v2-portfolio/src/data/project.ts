@@ -29,7 +29,7 @@ export const projects: ProjectItem[] = [
     title: "Cosmot",
     category: "Full-Stack E-Commerce",
     description:
-      "A fullstack cosmetics e-commerce platform built with Express, React, and PostgreSQL.",
+      "A full-stack cosmetics e-commerce platform built with React, Express, and PostgreSQL. Features a structured REST API backend, relational product persistence, and a responsive storefront designed for smooth browsing and checkout.",
     highlights: [
       "End-to-end e-commerce storefront with Express REST APIs and PostgreSQL persistence",
       "Responsive product browsing and storefront UI built with React and Tailwind CSS",
@@ -44,7 +44,7 @@ export const projects: ProjectItem[] = [
     title: "Enj.",
     category: "Social Media Platform",
     description:
-      "A modern, full-stack social media platform built for creators and communities. Post. Share. Connect.",
+      "A modern full-stack social media platform built for creators and communities to post, share, and connect. Powered by TypeScript, Express, Better Auth authentication, TanStack Query data synchronization, and containerized Docker workflows.",
     highlights: [
       "Creator and community social experience supporting posts, sharing, and interactions",
       "Authentication powered by Better Auth with TanStack Query for client data synchronization",
@@ -59,7 +59,7 @@ export const projects: ProjectItem[] = [
     title: "Drug Tracker",
     category: "Healthcare & Medication Platform",
     description:
-      "A full-stack medicine management and health tracking platform featuring a searchable medicine catalogue, personalized medication schedules, dose tracking, prescription requests, pharmacist communication, and health education. Built with Next.js and TypeScript, featuring a clean, responsive interface.",
+      "A full-stack medicine management and health tracking platform featuring a searchable medicine catalogue, personalized medication schedules, dose tracking, prescription requests, pharmacist communication, and health education built with Next.js and TypeScript.",
     highlights: [
       "Searchable medicine catalogue with personalized medication schedules and dose tracking",
       "Prescription requests, pharmacist communication workflows, and health education resources",
@@ -74,7 +74,7 @@ export const projects: ProjectItem[] = [
     title: "Food Delivery App",
     category: "Real-Time Ordering App",
     description:
-      "A full-stack food delivery application with authentication, role-based access, and real-time updates.",
+      "A full-stack food delivery application built with React, TypeScript, and Firebase. Supports user authentication, role-based access control across ordering workflows, and real-time status synchronization in a responsive Tailwind CSS interface.",
     highlights: [
       "User authentication and role-based access control for delivery workflows",
       "Real-time status synchronization powered by Firebase",
