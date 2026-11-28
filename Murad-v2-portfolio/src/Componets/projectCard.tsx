@@ -1,6 +1,7 @@
 import { motion, type Variants } from "framer-motion";
 import { FiGithub, FiExternalLink, FiArrowUpRight } from "react-icons/fi";
 import type { ProjectItem } from "../data/project";
+import type { SectionThemePalette } from "../data/themePalette";
 
 type ProjectCardProps = {
   project: ProjectItem;
@@ -9,6 +10,8 @@ type ProjectCardProps = {
   slotClass?: string;
   direction: number;
   prefersReducedMotion: boolean;
+  activeTheme: SectionThemePalette;
+  isDark: boolean;
   onViewProject: () => void;
   onPromote?: () => void;
 };
@@ -55,6 +58,8 @@ const ProjectCard = ({
   slotClass = "",
   direction,
   prefersReducedMotion,
+  activeTheme,
+  isDark,
   onViewProject,
   onPromote,
 }: ProjectCardProps) => {
@@ -62,6 +67,12 @@ const ProjectCard = ({
   const isPreview = variant === "preview";
   const isMobile = variant === "mobile";
   const custom = { direction, reduced: prefersReducedMotion };
+  const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
+  const cardSurfaceStyle = {
+    backgroundColor: isDark ? activeTheme.surfaceDark : activeTheme.surfaceLight,
+    borderColor: isDark ? activeTheme.borderDark : activeTheme.borderLight,
+    boxShadow: `0 20px 40px -15px ${activeTheme.glow}`,
+  };
 
   if (isPreview) {
     return (
@@ -90,39 +101,67 @@ const ProjectCard = ({
             onPromote?.();
           }
         }}
+        style={cardSurfaceStyle}
         aria-label={`Feature project ${projectNumber}: ${title}`}
-        className={`${slotClass} group relative overflow-hidden rounded-2xl bg-white/85 dark:bg-[#0b182e]/90 backdrop-blur-md border border-slate-200 dark:border-slate-800/90 hover:border-emerald-400/60 transition-colors duration-300 shadow-xl shadow-emerald-500/5 flex flex-col cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400`}
+        className={`${slotClass} group relative overflow-hidden rounded-2xl backdrop-blur-md border transition-colors duration-500 flex flex-col cursor-pointer focus:outline-none`}
       >
         {/* Preview Image */}
-        <div className="relative h-44 sm:h-48 md:h-44 lg:h-48 w-full overflow-hidden bg-[#0b182e] shrink-0">
+        <div
+          style={{ backgroundColor: activeTheme.imageBg }}
+          className="relative h-44 sm:h-48 md:h-44 lg:h-48 w-full overflow-hidden shrink-0 transition-colors duration-500"
+        >
           <img
             src={image}
             alt={`${title} preview`}
-            className="h-full w-full object-cover brightness-[0.94] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover brightness-[0.95] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/90 via-[#0b182e]/25 to-[#0b182e]/15" />
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to top, ${activeTheme.imageBg}e6, ${activeTheme.imageBg}38 55%, ${activeTheme.imageBg}1f)`,
+            }}
+            className="absolute inset-0 transition-all duration-500"
+          />
 
-          <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-bold tracking-wider bg-[#0b182e]/85 text-emerald-400 border border-emerald-400/35 backdrop-blur-md">
+          <span
+            style={{
+              backgroundColor: activeTheme.badgeBg,
+              color: activeTheme.accentTextDark,
+              borderColor: activeTheme.pillBorder,
+            }}
+            className="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-bold tracking-wider border backdrop-blur-md transition-colors duration-500"
+          >
             {projectNumber}
           </span>
 
-          <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#0b182e]/80 text-slate-200 border border-white/15 backdrop-blur-md opacity-85 group-hover:opacity-100 transition-opacity">
+          <span
+            style={{ backgroundColor: activeTheme.badgeBg }}
+            className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-200 border border-white/15 backdrop-blur-md opacity-85 group-hover:opacity-100 transition-opacity"
+          >
             Click to focus
           </span>
         </div>
 
         {/* Preview Footer */}
-        <div className="p-4 flex items-center justify-between gap-3 border-t border-slate-200/80 dark:border-slate-800/80 flex-1">
+        <div className="p-4 flex items-center justify-between gap-3 border-t border-slate-200/60 dark:border-white/10 flex-1">
           <div className="min-w-0">
-            <span className="block text-[11px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-0.5 truncate">
+            <span
+              style={{ color: accentText }}
+              className="block text-[11px] font-semibold uppercase tracking-wider mb-0.5 truncate transition-colors duration-500"
+            >
               {category}
             </span>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white transition-colors truncate">
               {title}
             </h3>
           </div>
 
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 group-hover:bg-gradient-to-r group-hover:from-emerald-400 group-hover:to-cyan-400 group-hover:text-slate-950 transition-colors">
+          <span
+            style={{
+              backgroundImage: `linear-gradient(135deg, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+              color: activeTheme.buttonText,
+            }}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105"
+          >
             <FiArrowUpRight size={18} />
           </span>
         </div>
@@ -149,13 +188,15 @@ const ProjectCard = ({
               scale: { duration: 0.3 },
             }
       }
-      className={`${slotClass} group relative overflow-hidden rounded-2xl bg-white/85 dark:bg-[#0b182e]/90 backdrop-blur-md border border-slate-200 dark:border-slate-800/90 hover:border-emerald-400/60 transition-colors duration-300 shadow-xl shadow-emerald-500/5 flex flex-col`}
+      style={cardSurfaceStyle}
+      className={`${slotClass} group relative overflow-hidden rounded-2xl backdrop-blur-md border transition-colors duration-500 flex flex-col`}
     >
       {/* Featured / Mobile Screenshot */}
       <button
         type="button"
         onClick={onViewProject}
-        className={`relative w-full overflow-hidden bg-[#0b182e] block text-left shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+        style={{ backgroundColor: activeTheme.imageBg }}
+        className={`relative w-full overflow-hidden block text-left shrink-0 transition-colors duration-500 focus:outline-none ${
           isMobile ? "h-48" : "h-56 sm:h-64 md:h-64 lg:h-72"
         }`}
         aria-label={`View full details for ${title}`}
@@ -163,15 +204,33 @@ const ProjectCard = ({
         <img
           src={image}
           alt={`${title} featured screenshot`}
-          className="h-full w-full object-cover brightness-[0.94] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
+          className="h-full w-full object-cover brightness-[0.95] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/90 via-[#0b182e]/20 to-[#0b182e]/15" />
+        <div
+          style={{
+            backgroundImage: `linear-gradient(to top, ${activeTheme.imageBg}e6, ${activeTheme.imageBg}33 55%, ${activeTheme.imageBg}1f)`,
+          }}
+          className="absolute inset-0 transition-all duration-500"
+        />
         {!isMobile && (
           <>
-            <span className="absolute top-4 left-4 px-3 py-1 rounded-lg text-sm font-bold tracking-wider bg-[#0b182e]/85 text-emerald-400 border border-emerald-400/35 backdrop-blur-md">
+            <span
+              style={{
+                backgroundColor: activeTheme.badgeBg,
+                color: activeTheme.accentTextDark,
+                borderColor: activeTheme.pillBorder,
+              }}
+              className="absolute top-4 left-4 px-3 py-1 rounded-lg text-sm font-bold tracking-wider border backdrop-blur-md transition-colors duration-500"
+            >
               {projectNumber}
             </span>
-            <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-[#0b182e]/80 text-amber-200 border border-amber-400/25 backdrop-blur-md">
+            <span
+              style={{
+                backgroundColor: activeTheme.badgeBg,
+                borderColor: activeTheme.pillBorder,
+              }}
+              className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold text-slate-100 border backdrop-blur-md transition-colors duration-500"
+            >
               {category}
             </span>
           </>
@@ -181,7 +240,7 @@ const ProjectCard = ({
       {/* Content + Actions kept close together */}
       <div className="p-5 sm:p-6 flex flex-col gap-4 flex-1">
         <div className="space-y-2">
-          <h3 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+          <h3 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white transition-colors">
             {title}
           </h3>
 
@@ -201,7 +260,12 @@ const ProjectCard = ({
           {tech.map((item) => (
             <span
               key={item}
-              className="px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25"
+              style={{
+                backgroundColor: activeTheme.pillBg,
+                color: accentText,
+                borderColor: activeTheme.pillBorder,
+              }}
+              className="px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-colors duration-500"
             >
               {item}
             </span>
@@ -209,15 +273,15 @@ const ProjectCard = ({
         </div>
 
         {/* Actions anchored directly beneath content */}
-        <div className="pt-3.5 sm:pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3 sm:gap-4 mt-auto">
+        <div className="pt-3.5 sm:pt-4 border-t border-slate-200/70 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 sm:gap-4 mt-auto">
           <div className="flex items-center gap-4 sm:gap-5">
             <a
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:opacity-80 transition-opacity"
             >
-              <FiGithub size={17} />
+              <FiGithub size={17} style={{ color: accentText }} />
               <span>Code</span>
             </a>
 
@@ -226,9 +290,9 @@ const ProjectCard = ({
                 href={live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 hover:opacity-80 transition-opacity"
               >
-                <FiExternalLink size={17} />
+                <FiExternalLink size={17} style={{ color: accentText }} />
                 <span>Live Demo</span>
               </a>
             )}
@@ -238,7 +302,12 @@ const ProjectCard = ({
             <button
               type="button"
               onClick={onViewProject}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-500 hover:to-cyan-500 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/25 transition-all"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+                color: activeTheme.buttonText,
+                boxShadow: `0 10px 24px -6px ${activeTheme.glow}`,
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm hover:brightness-110 transition-all duration-300"
             >
               <span>View Project</span>
               <FiArrowUpRight size={16} />

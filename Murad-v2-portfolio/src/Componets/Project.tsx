@@ -3,6 +3,7 @@ import ProjectCard from "./projectCard";
 import CarouselControls from "./CarouselControls";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useRotatingCarousel } from "../hooks/useRotatingCarousel";
+import { useTheme } from "../context/ThemeContext";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import { FiGithub, FiExternalLink, FiX, FiCheckCircle } from "react-icons/fi";
@@ -16,6 +17,8 @@ const SLOT_CLASSES = [
 
 const Projects = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const prefersReducedMotion = Boolean(useReducedMotion());
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
@@ -34,6 +37,9 @@ const Projects = () => {
     handleTouchEnd,
     handleWheel,
   } = useRotatingCarousel(total);
+
+  const activeTheme = filteredProjects[safeActiveIndex]?.theme ?? projects[0].theme;
+  const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
 
   useEffect(() => {
     if (!selectedProject) return;
@@ -82,9 +88,17 @@ const Projects = () => {
       >
         <div className="mb-6 sm:mb-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Featured <span className="text-emerald-500 dark:text-emerald-400">Projects</span>
+            Featured{" "}
+            <span style={{ color: accentText }} className="transition-colors duration-500">
+              Projects
+            </span>
           </h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full mx-auto mb-4" />
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+            }}
+            className="w-20 h-1.5 rounded-full mx-auto mb-4 transition-all duration-500"
+          />
           <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
             Production web applications with full-stack architecture and live deployments
           </p>
@@ -99,7 +113,7 @@ const Projects = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
-          className={`relative focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-2xl ${
+          className={`relative focus:outline-none rounded-2xl ${
             total > 1 ? "md:px-12" : ""
           }`}
         >
@@ -122,6 +136,8 @@ const Projects = () => {
                   variant="mobile"
                   direction={direction}
                   prefersReducedMotion={prefersReducedMotion}
+                  activeTheme={activeTheme}
+                  isDark={isDark}
                   onViewProject={() =>
                     setSelectedProject(filteredProjects[safeActiveIndex])
                   }
@@ -137,7 +153,8 @@ const Projects = () => {
                 type="button"
                 onClick={handlePrev}
                 aria-label="Previous project"
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-[#0b182e]/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg"
+                style={{ borderColor: `${activeTheme.accent}55` }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 <ChevronLeft size={22} />
               </button>
@@ -165,6 +182,8 @@ const Projects = () => {
                       slotClass={slotClass}
                       direction={direction}
                       prefersReducedMotion={prefersReducedMotion}
+                      activeTheme={activeTheme}
+                      isDark={isDark}
                       onViewProject={() => setSelectedProject(project)}
                       onPromote={offset > 0 ? () => handlePromoteOffset(offset) : undefined}
                     />
@@ -178,7 +197,8 @@ const Projects = () => {
                 type="button"
                 onClick={handleNext}
                 aria-label="Next project"
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-[#0b182e]/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg"
+                style={{ borderColor: `${activeTheme.accent}55` }}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 <ChevronRight size={22} />
               </button>
@@ -196,6 +216,8 @@ const Projects = () => {
           onNext={handleNext}
           onSelectPage={goToIndex}
           labelPrefix="projects"
+          accent={activeTheme.accent}
+          accentSecondary={activeTheme.accentSecondary}
         />
       </motion.div>
 
@@ -218,26 +240,50 @@ const Projects = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.25 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0b182e] border border-slate-200 dark:border-slate-800 shadow-2xl"
+              style={{
+                backgroundColor: isDark
+                  ? selectedProject.theme.surfaceDark
+                  : "#ffffff",
+                borderColor: isDark
+                  ? selectedProject.theme.borderDark
+                  : selectedProject.theme.borderLight,
+              }}
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border shadow-2xl"
             >
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
                 aria-label="Close project details"
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[#0b182e]/85 text-white hover:bg-emerald-400 hover:text-slate-950 transition-colors"
+                style={{ backgroundColor: selectedProject.theme.badgeBg }}
+                className="absolute top-4 right-4 z-10 p-2 rounded-full text-white hover:scale-105 transition-transform"
               >
                 <FiX size={20} />
               </button>
 
-              <div className="relative h-64 sm:h-72 w-full bg-[#0b182e] overflow-hidden">
+              <div
+                style={{ backgroundColor: selectedProject.theme.imageBg }}
+                className="relative h-64 sm:h-72 w-full overflow-hidden"
+              >
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.title}
-                  className="h-full w-full object-cover brightness-[0.94] contrast-[1.04]"
+                  className="h-full w-full object-cover brightness-[0.95] contrast-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/95 via-[#0b182e]/25 to-transparent" />
+                <div
+                  style={{
+                    backgroundImage: `linear-gradient(to top, ${selectedProject.theme.imageBg}f0, ${selectedProject.theme.imageBg}38 55%, transparent)`,
+                  }}
+                  className="absolute inset-0"
+                />
                 <div className="absolute bottom-4 left-6 right-6">
-                  <span className="inline-block px-3 py-1 mb-2 rounded-full text-xs font-semibold bg-[#0b182e]/80 text-emerald-300 border border-emerald-400/35 backdrop-blur-md">
+                  <span
+                    style={{
+                      backgroundColor: selectedProject.theme.badgeBg,
+                      color: selectedProject.theme.accentTextDark,
+                      borderColor: selectedProject.theme.pillBorder,
+                    }}
+                    className="inline-block px-3 py-1 mb-2 rounded-full text-xs font-semibold border backdrop-blur-md"
+                  >
                     {selectedProject.category}
                   </span>
                   <h3
@@ -251,7 +297,14 @@ const Projects = () => {
 
               <div className="p-6 sm:p-8 space-y-6">
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+                  <h4
+                    style={{
+                      color: isDark
+                        ? selectedProject.theme.accentTextDark
+                        : selectedProject.theme.accentTextLight,
+                    }}
+                    className="text-sm font-bold uppercase tracking-wider mb-2"
+                  >
                     Overview
                   </h4>
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -260,7 +313,14 @@ const Projects = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3">
+                  <h4
+                    style={{
+                      color: isDark
+                        ? selectedProject.theme.accentTextDark
+                        : selectedProject.theme.accentTextLight,
+                    }}
+                    className="text-sm font-bold uppercase tracking-wider mb-3"
+                  >
                     Key Capabilities & Stack Highlights
                   </h4>
                   <ul className="space-y-2.5">
@@ -269,7 +329,11 @@ const Projects = () => {
                         key={item}
                         className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300"
                       >
-                        <FiCheckCircle className="text-emerald-500 shrink-0 mt-0.5" size={16} />
+                        <FiCheckCircle
+                          style={{ color: selectedProject.theme.accent }}
+                          className="shrink-0 mt-0.5"
+                          size={16}
+                        />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -277,14 +341,28 @@ const Projects = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3">
+                  <h4
+                    style={{
+                      color: isDark
+                        ? selectedProject.theme.accentTextDark
+                        : selectedProject.theme.accentTextLight,
+                    }}
+                    className="text-sm font-bold uppercase tracking-wider mb-3"
+                  >
                     Technologies Used
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.tech.map((item) => (
                       <span
                         key={item}
-                        className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25"
+                        style={{
+                          backgroundColor: selectedProject.theme.pillBg,
+                          color: isDark
+                            ? selectedProject.theme.accentTextDark
+                            : selectedProject.theme.accentTextLight,
+                          borderColor: selectedProject.theme.pillBorder,
+                        }}
+                        className="px-3 py-1 text-xs font-semibold rounded-full border"
                       >
                         {item}
                       </span>
@@ -297,7 +375,7 @@ const Projects = () => {
                     href={selectedProject.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:opacity-80 transition-opacity"
                   >
                     <FiGithub size={18} />
                     <span>View Source Code</span>
@@ -308,7 +386,12 @@ const Projects = () => {
                       href={selectedProject.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-500 hover:to-cyan-500 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/25 transition-colors"
+                      style={{
+                        backgroundImage: `linear-gradient(to right, ${selectedProject.theme.accent}, ${selectedProject.theme.accentSecondary})`,
+                        color: selectedProject.theme.buttonText,
+                        boxShadow: `0 10px 24px -6px ${selectedProject.theme.glow}`,
+                      }}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold hover:brightness-110 transition-all"
                     >
                       <FiExternalLink size={18} />
                       <span>Open Live Demo</span>

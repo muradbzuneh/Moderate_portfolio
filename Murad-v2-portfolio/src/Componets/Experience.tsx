@@ -1,6 +1,8 @@
 import { credentials, type CredentialItem } from "../data/experience";
+import type { SectionThemePalette } from "../data/themePalette";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useRotatingCarousel } from "../hooks/useRotatingCarousel";
+import { useTheme } from "../context/ThemeContext";
 import CarouselControls from "./CarouselControls";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion, type Variants } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
@@ -37,15 +39,20 @@ const CredentialCard = ({
   isMobile,
   direction,
   prefersReducedMotion,
+  activeTheme,
+  isDark,
 }: {
   item: CredentialItem;
   slotClass?: string;
   isMobile: boolean;
   direction: number;
   prefersReducedMotion: boolean;
+  activeTheme: SectionThemePalette;
+  isDark: boolean;
 }) => {
   const Icon = item.icon;
   const custom = { direction, reduced: prefersReducedMotion };
+  const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
 
   return (
     <motion.article
@@ -67,28 +74,58 @@ const CredentialCard = ({
             }
       }
       whileHover={prefersReducedMotion ? undefined : { y: -4 }}
-      className={`${slotClass} group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800/90 bg-white/85 dark:bg-[#0b182e]/90 backdrop-blur-md shadow-xl shadow-emerald-500/5 hover:border-emerald-400/60 transition-colors flex flex-col justify-between`}
+      style={{
+        backgroundColor: isDark ? activeTheme.surfaceDark : activeTheme.surfaceLight,
+        borderColor: isDark ? activeTheme.borderDark : activeTheme.borderLight,
+        boxShadow: `0 20px 40px -15px ${activeTheme.glow}`,
+      }}
+      className={`${slotClass} group overflow-hidden rounded-2xl border backdrop-blur-md transition-colors duration-500 flex flex-col justify-between`}
     >
       <div>
-        {/* Responsive Credential Image harmonized with first project midnight-navy palette */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#0b182e]">
+        {/* Responsive Credential Image harmonized with active Position-1 item */}
+        <div
+          style={{ backgroundColor: activeTheme.imageBg }}
+          className="relative aspect-[16/9] w-full overflow-hidden transition-colors duration-500"
+        >
           <img
             src={item.image}
             alt={item.title}
             loading="lazy"
-            className="h-full w-full object-cover brightness-[0.94] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover brightness-[0.95] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/90 via-[#0b182e]/25 to-[#0b182e]/15" />
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to top, ${activeTheme.imageBg}e6, ${activeTheme.imageBg}33 55%, ${activeTheme.imageBg}1f)`,
+            }}
+            className="absolute inset-0 transition-all duration-500"
+          />
 
-          <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#0b182e]/85 border border-emerald-400/40 text-emerald-400 backdrop-blur-md">
+          <div
+            style={{
+              backgroundColor: activeTheme.badgeBg,
+              borderColor: activeTheme.pillBorder,
+              color: activeTheme.accentTextDark,
+            }}
+            className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl border backdrop-blur-md transition-colors duration-500"
+          >
             <Icon className="text-xl" />
           </div>
 
           <div className="absolute top-3 right-3 flex flex-wrap items-center justify-end gap-1.5">
-            <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#0b182e]/85 text-emerald-300 border border-emerald-400/35 backdrop-blur-md">
+            <span
+              style={{
+                backgroundColor: activeTheme.badgeBg,
+                color: activeTheme.accentTextDark,
+                borderColor: activeTheme.pillBorder,
+              }}
+              className="px-2.5 py-1 rounded-full text-[11px] font-semibold border backdrop-blur-md transition-colors duration-500"
+            >
               {item.badge}
             </span>
-            <span className="hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#0b182e]/80 text-amber-200 border border-amber-400/25 backdrop-blur-md">
+            <span
+              style={{ backgroundColor: activeTheme.badgeBg }}
+              className="hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-200 border border-white/15 backdrop-blur-md"
+            >
               {item.period}
             </span>
           </div>
@@ -96,10 +133,13 @@ const CredentialCard = ({
 
         {/* Card Body */}
         <div className="p-5 sm:p-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+          <p
+            style={{ color: accentText }}
+            className="text-xs font-semibold uppercase tracking-wider mb-1 transition-colors duration-500"
+          >
             {item.subtitle}
           </p>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2.5 transition-colors">
             {item.title}
           </h3>
 
@@ -114,19 +154,25 @@ const CredentialCard = ({
           {item.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25"
+              style={{
+                backgroundColor: activeTheme.pillBg,
+                color: accentText,
+                borderColor: activeTheme.pillBorder,
+              }}
+              className="px-3 py-1 text-xs font-semibold rounded-full border transition-colors duration-500"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80">
+        <div className="pt-4 border-t border-slate-200/70 dark:border-white/10">
           <a
             href={item.actionHref}
             target={item.external ? "_blank" : undefined}
             rel={item.external ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-amber-500 dark:hover:text-amber-300 transition-colors"
+            style={{ color: accentText }}
+            className="inline-flex items-center gap-1.5 text-sm font-bold hover:opacity-80 transition-opacity"
           >
             <span>{item.actionLabel}</span>
             <FiArrowUpRight size={17} />
@@ -139,6 +185,8 @@ const CredentialCard = ({
 
 const Experience = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const prefersReducedMotion = Boolean(useReducedMotion());
   const total = credentials.length;
 
@@ -153,6 +201,9 @@ const Experience = () => {
     handleTouchEnd,
     handleWheel,
   } = useRotatingCarousel(total);
+
+  const activeTheme = credentials[safeIndex]?.theme ?? credentials[0].theme;
+  const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
 
   const visiblePair = [
     credentials[safeIndex % total],
@@ -172,9 +223,17 @@ const Experience = () => {
       >
         <div className="mb-6 sm:mb-8">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Achievements & <span className="text-emerald-500 dark:text-emerald-400">Credentials</span>
+            Achievements &{" "}
+            <span style={{ color: accentText }} className="transition-colors duration-500">
+              Credentials
+            </span>
           </h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full" />
+          <div
+            style={{
+              backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+            }}
+            className="w-20 h-1.5 rounded-full transition-all duration-500"
+          />
         </div>
 
         {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
@@ -187,7 +246,7 @@ const Experience = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
-          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-2xl [perspective:1200px]"
+          className="focus:outline-none rounded-2xl [perspective:1200px]"
         >
           {/* Mobile (< md): 1 card rotational deck */}
           <div className="md:hidden overflow-hidden">
@@ -202,6 +261,8 @@ const Experience = () => {
                 isMobile
                 direction={direction}
                 prefersReducedMotion={prefersReducedMotion}
+                activeTheme={activeTheme}
+                isDark={isDark}
               />
             </AnimatePresence>
           </div>
@@ -223,6 +284,8 @@ const Experience = () => {
                       isMobile={false}
                       direction={direction}
                       prefersReducedMotion={prefersReducedMotion}
+                      activeTheme={activeTheme}
+                      isDark={isDark}
                     />
                   ))}
                 </AnimatePresence>
@@ -240,6 +303,8 @@ const Experience = () => {
           onNext={handleNext}
           onSelectPage={goToIndex}
           labelPrefix="credentials"
+          accent={activeTheme.accent}
+          accentSecondary={activeTheme.accentSecondary}
         />
       </motion.div>
     </section>

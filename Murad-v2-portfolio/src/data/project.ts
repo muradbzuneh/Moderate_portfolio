@@ -1,3 +1,5 @@
+import type { SectionThemePalette } from "./themePalette";
+
 export interface ProjectItem {
   title: string;
   category: string;
@@ -7,6 +9,7 @@ export interface ProjectItem {
   github: string;
   live?: string;
   image: string;
+  theme: SectionThemePalette;
 }
 
 export const projects: ProjectItem[] = [
@@ -24,6 +27,22 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/proshe_app",
     live: "https://proshe-app.vercel.app/",
     image: "/proshe-night-logo.jpg",
+    theme: {
+      accent: "#22c55e",
+      accentSecondary: "#f59e0b",
+      accentTextLight: "#15803d",
+      accentTextDark: "#4ade80",
+      surfaceLight: "rgba(240, 253, 244, 0.92)",
+      surfaceDark: "rgba(11, 24, 46, 0.90)",
+      imageBg: "#0b182e",
+      badgeBg: "rgba(11, 24, 46, 0.85)",
+      borderLight: "rgba(34, 197, 94, 0.30)",
+      borderDark: "rgba(34, 197, 94, 0.32)",
+      glow: "rgba(34, 197, 94, 0.16)",
+      pillBg: "rgba(34, 197, 94, 0.12)",
+      pillBorder: "rgba(34, 197, 94, 0.28)",
+      buttonText: "#052e16",
+    },
   },
   {
     title: "Cosmot",
@@ -39,6 +58,22 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/codeAlpha_Cosmot_app",
     live: "https://cosmot-app.vercel.app",
     image: "/cosmot-banner.png",
+    theme: {
+      accent: "#c49a6c",
+      accentSecondary: "#a16207",
+      accentTextLight: "#784f2a",
+      accentTextDark: "#e5c198",
+      surfaceLight: "rgba(250, 246, 240, 0.95)",
+      surfaceDark: "rgba(32, 26, 22, 0.90)",
+      imageBg: "#241f1b",
+      badgeBg: "rgba(36, 31, 27, 0.86)",
+      borderLight: "rgba(196, 154, 108, 0.38)",
+      borderDark: "rgba(196, 154, 108, 0.35)",
+      glow: "rgba(196, 154, 108, 0.18)",
+      pillBg: "rgba(196, 154, 108, 0.14)",
+      pillBorder: "rgba(196, 154, 108, 0.32)",
+      buttonText: "#1c140d",
+    },
   },
   {
     title: "Enj.",
@@ -54,6 +89,22 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/codeAlpha-Enj",
     live: "https://code-alpha-enj-web.vercel.app/",
     image: "/enj-mobile-view.jpg",
+    theme: {
+      accent: "#f43f5e",
+      accentSecondary: "#fb923c",
+      accentTextLight: "#be123c",
+      accentTextDark: "#fb7185",
+      surfaceLight: "rgba(255, 241, 242, 0.94)",
+      surfaceDark: "rgba(33, 18, 28, 0.90)",
+      imageBg: "#24131f",
+      badgeBg: "rgba(36, 19, 31, 0.86)",
+      borderLight: "rgba(244, 63, 94, 0.30)",
+      borderDark: "rgba(244, 63, 94, 0.34)",
+      glow: "rgba(244, 63, 94, 0.18)",
+      pillBg: "rgba(244, 63, 94, 0.12)",
+      pillBorder: "rgba(244, 63, 94, 0.28)",
+      buttonText: "#ffffff",
+    },
   },
   {
     title: "Drug Tracker",
@@ -69,6 +120,22 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/MB_Drug_Tracker",
     live: "https://mb-drug.vercel.app",
     image: "/drug-rukker-banner.png",
+    theme: {
+      accent: "#14b8a6",
+      accentSecondary: "#2563eb",
+      accentTextLight: "#0f766e",
+      accentTextDark: "#2dd4bf",
+      surfaceLight: "rgba(240, 253, 250, 0.94)",
+      surfaceDark: "rgba(12, 32, 46, 0.90)",
+      imageBg: "#0c2233",
+      badgeBg: "rgba(12, 34, 51, 0.86)",
+      borderLight: "rgba(20, 184, 166, 0.32)",
+      borderDark: "rgba(20, 184, 166, 0.35)",
+      glow: "rgba(20, 184, 166, 0.18)",
+      pillBg: "rgba(20, 184, 166, 0.12)",
+      pillBorder: "rgba(20, 184, 166, 0.30)",
+      buttonText: "#042f2e",
+    },
   },
   {
     title: "Food Delivery App",
@@ -84,6 +151,22 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/MB_Food_delivery_project",
     live: "https://mb-food-delivery-project.vercel.app/",
     image: "/Project1.jpg",
+    theme: {
+      accent: "#f97316",
+      accentSecondary: "#eab308",
+      accentTextLight: "#c2410c",
+      accentTextDark: "#fb923c",
+      surfaceLight: "rgba(255, 247, 237, 0.94)",
+      surfaceDark: "rgba(36, 20, 14, 0.90)",
+      imageBg: "#26150e",
+      badgeBg: "rgba(38, 21, 14, 0.86)",
+      borderLight: "rgba(249, 115, 22, 0.32)",
+      borderDark: "rgba(249, 115, 22, 0.35)",
+      glow: "rgba(249, 115, 22, 0.18)",
+      pillBg: "rgba(249, 115, 22, 0.13)",
+      pillBorder: "rgba(249, 115, 22, 0.30)",
+      buttonText: "#1f0f05",
+    },
   },
   {
     title: "Estud",
@@ -99,5 +182,21 @@ export const projects: ProjectItem[] = [
     github: "https://github.com/muradbzuneh/Estud",
     live: "https://estud-v-2-9clb.vercel.app/",
     image: "/estud-banner.jpg",
+    theme: {
+      accent: "#3b82f6",
+      accentSecondary: "#f97316",
+      accentTextLight: "#1d4ed8",
+      accentTextDark: "#60a5fa",
+      surfaceLight: "rgba(239, 246, 255, 0.94)",
+      surfaceDark: "rgba(15, 28, 52, 0.90)",
+      imageBg: "#0f1c34",
+      badgeBg: "rgba(15, 28, 52, 0.86)",
+      borderLight: "rgba(59, 130, 246, 0.32)",
+      borderDark: "rgba(59, 130, 246, 0.35)",
+      glow: "rgba(59, 130, 246, 0.18)",
+      pillBg: "rgba(59, 130, 246, 0.12)",
+      pillBorder: "rgba(59, 130, 246, 0.30)",
+      buttonText: "#ffffff",
+    },
   },
 ];
