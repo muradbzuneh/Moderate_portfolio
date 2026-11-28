@@ -108,7 +108,7 @@ const ProjectCard = ({
         {/* Preview Image */}
         <div
           style={{ backgroundColor: activeTheme.imageBg }}
-          className="relative h-44 sm:h-48 md:h-44 lg:h-48 w-full overflow-hidden shrink-0 transition-colors duration-500"
+          className="relative h-36 sm:h-40 md:h-36 lg:h-40 w-full overflow-hidden shrink-0 transition-colors duration-500"
         >
           <img
             src={image}
@@ -197,7 +197,7 @@ const ProjectCard = ({
         onClick={onViewProject}
         style={{ backgroundColor: activeTheme.imageBg }}
         className={`relative w-full overflow-hidden block text-left shrink-0 transition-colors duration-500 focus:outline-none ${
-          isMobile ? "h-48" : "h-56 sm:h-64 md:h-64 lg:h-72"
+          isMobile ? "h-44" : "h-48 sm:h-52 md:h-48 lg:h-56"
         }`}
         aria-label={`View full details for ${title}`}
       >

@@ -184,13 +184,16 @@ const CredentialCard = ({
 };
 
 const Experience = () => {
-  const { ref, isVisible } = useScrollAnimation(0.1);
+  const { ref: revealRef, isVisible } = useScrollAnimation(0.05);
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const prefersReducedMotion = Boolean(useReducedMotion());
   const total = credentials.length;
 
   const {
+    trackRef,
+    stickyRef,
+    scrollRunwayStyle,
     safeIndex,
     direction,
     handleNext,
@@ -200,7 +203,7 @@ const Experience = () => {
     handleTouchStart,
     handleTouchEnd,
     handleWheel,
-  } = useRotatingCarousel(total);
+  } = useRotatingCarousel(total, 270);
 
   const activeTheme = credentials[safeIndex]?.theme ?? credentials[0].theme;
   const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
@@ -213,100 +216,107 @@ const Experience = () => {
   return (
     <section
       id="credentials"
-      ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-6xl py-8 sm:py-10"
+      ref={trackRef}
+      style={scrollRunwayStyle}
+      className="relative mx-auto max-w-6xl"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-        transition={{ duration: prefersReducedMotion ? 0.2 : 0.7 }}
+      <div
+        ref={stickyRef}
+        className="sticky top-[60px] sm:top-[72px] py-4 sm:py-6"
       >
-        <div className="mb-6 sm:mb-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Achievements &{" "}
-            <span style={{ color: accentText }} className="transition-colors duration-500">
-              Credentials
-            </span>
-          </h2>
-          <div
-            style={{
-              backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
-            }}
-            className="w-20 h-1.5 rounded-full transition-all duration-500"
-          />
-        </div>
-
-        {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
-        <div
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Achievements and credentials"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onWheel={handleWheel}
-          className="focus:outline-none rounded-2xl [perspective:1200px]"
+        <motion.div
+          ref={revealRef as React.RefObject<HTMLDivElement>}
+          initial={{ opacity: 0, y: 24 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: prefersReducedMotion ? 0.2 : 0.7 }}
         >
-          {/* Mobile (< md): 1 card rotational deck */}
-          <div className="md:hidden overflow-hidden">
-            <AnimatePresence
-              mode="wait"
-              initial={false}
-              custom={{ direction, reduced: prefersReducedMotion }}
-            >
-              <CredentialCard
-                key={`mobile-${credentials[safeIndex].id}`}
-                item={credentials[safeIndex]}
-                isMobile
-                direction={direction}
-                prefersReducedMotion={prefersReducedMotion}
-                activeTheme={activeTheme}
-                isDark={isDark}
-              />
-            </AnimatePresence>
+          <div className="mb-5 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+              Achievements &{" "}
+              <span style={{ color: accentText }} className="transition-colors duration-500">
+                Credentials
+              </span>
+            </h2>
+            <div
+              style={{
+                backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+              }}
+              className="w-20 h-1.5 rounded-full transition-all duration-500"
+            />
           </div>
 
-          {/* Desktop (md+): 2 large rotating cards */}
-          <div className="hidden md:block">
-            <LayoutGroup id="credentials-rotating-showcase">
-              <div className="grid grid-cols-2 gap-6 items-stretch">
-                <AnimatePresence
-                  mode="popLayout"
-                  initial={false}
-                  custom={{ direction, reduced: prefersReducedMotion }}
-                >
-                  {visiblePair.map((item, slotIdx) => (
-                    <CredentialCard
-                      key={item.id}
-                      item={item}
-                      slotClass={SLOT_CLASSES[slotIdx]}
-                      isMobile={false}
-                      direction={direction}
-                      prefersReducedMotion={prefersReducedMotion}
-                      activeTheme={activeTheme}
-                      isDark={isDark}
-                    />
-                  ))}
-                </AnimatePresence>
-              </div>
-            </LayoutGroup>
-          </div>
-        </div>
+          {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
+          <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Achievements and credentials"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
+            className="focus:outline-none rounded-2xl [perspective:1200px]"
+          >
+            {/* Mobile (< md): 1 card rotational deck */}
+            <div className="md:hidden overflow-hidden">
+              <AnimatePresence
+                mode="wait"
+                initial={false}
+                custom={{ direction, reduced: prefersReducedMotion }}
+              >
+                <CredentialCard
+                  key={`mobile-${credentials[safeIndex].id}`}
+                  item={credentials[safeIndex]}
+                  isMobile
+                  direction={direction}
+                  prefersReducedMotion={prefersReducedMotion}
+                  activeTheme={activeTheme}
+                  isDark={isDark}
+                />
+              </AnimatePresence>
+            </div>
 
-        <CarouselControls
-          canScrollLeft={total > 1}
-          canScrollRight={total > 1}
-          activePage={safeIndex}
-          pageCount={total}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onSelectPage={goToIndex}
-          labelPrefix="credentials"
-          accent={activeTheme.accent}
-          accentSecondary={activeTheme.accentSecondary}
-        />
-      </motion.div>
+            {/* Desktop (md+): 2 large rotating cards */}
+            <div className="hidden md:block">
+              <LayoutGroup id="credentials-rotating-showcase">
+                <div className="grid grid-cols-2 gap-6 items-stretch">
+                  <AnimatePresence
+                    mode="popLayout"
+                    initial={false}
+                    custom={{ direction, reduced: prefersReducedMotion }}
+                  >
+                    {visiblePair.map((item, slotIdx) => (
+                      <CredentialCard
+                        key={item.id}
+                        item={item}
+                        slotClass={SLOT_CLASSES[slotIdx]}
+                        isMobile={false}
+                        direction={direction}
+                        prefersReducedMotion={prefersReducedMotion}
+                        activeTheme={activeTheme}
+                        isDark={isDark}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </LayoutGroup>
+            </div>
+          </div>
+
+          <CarouselControls
+            canScrollLeft={total > 1}
+            canScrollRight={total > 1}
+            activePage={safeIndex}
+            pageCount={total}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            onSelectPage={goToIndex}
+            labelPrefix="credentials"
+            accent={activeTheme.accent}
+            accentSecondary={activeTheme.accentSecondary}
+          />
+        </motion.div>
+      </div>
     </section>
   );
 };

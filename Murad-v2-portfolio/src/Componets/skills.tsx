@@ -111,12 +111,15 @@ const SkillCategoryCard = ({
 };
 
 const Skills = () => {
-  const { ref, isVisible } = useScrollAnimation(0.1);
+  const { ref: revealRef, isVisible } = useScrollAnimation(0.05);
   const prefersReducedMotion = Boolean(useReducedMotion());
   const categories = Object.entries(skills);
   const total = categories.length;
 
   const {
+    trackRef,
+    stickyRef,
+    scrollRunwayStyle,
     safeIndex,
     direction,
     handleNext,
@@ -126,7 +129,7 @@ const Skills = () => {
     handleTouchStart,
     handleTouchEnd,
     handleWheel,
-  } = useRotatingCarousel(total);
+  } = useRotatingCarousel(total, 260);
 
   const visiblePair = [
     categories[safeIndex % total],
@@ -136,88 +139,95 @@ const Skills = () => {
   return (
     <section
       id="skills"
-      ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-6xl py-8 sm:py-10"
+      ref={trackRef}
+      style={scrollRunwayStyle}
+      className="relative mx-auto max-w-6xl"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
+      <div
+        ref={stickyRef}
+        className="sticky top-[60px] sm:top-[72px] py-4 sm:py-6"
       >
-        <div className="mb-6 sm:mb-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Skills & <span className="text-cyan-500 dark:text-cyan-400">Expertise</span>
-          </h2>
-          <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
-        </div>
-
-        {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
-        <div
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Skills categories"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onWheel={handleWheel}
-          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl [perspective:1200px]"
+        <motion.div
+          ref={revealRef as React.RefObject<HTMLDivElement>}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
         >
-          {/* Mobile (< md): 1 card rotational deck */}
-          <div className="md:hidden overflow-hidden">
-            <AnimatePresence
-              mode="wait"
-              initial={false}
-              custom={{ direction, reduced: prefersReducedMotion }}
-            >
-              <SkillCategoryCard
-                key={`mobile-${categories[safeIndex][0]}`}
-                category={categories[safeIndex][0]}
-                items={categories[safeIndex][1]}
-                isMobile
-                direction={direction}
-                prefersReducedMotion={prefersReducedMotion}
-              />
-            </AnimatePresence>
+          <div className="mb-5 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+              Skills & <span className="text-cyan-500 dark:text-cyan-400">Expertise</span>
+            </h2>
+            <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
           </div>
 
-          {/* Desktop (md+): 2 rotating skill category cards */}
-          <div className="hidden md:block">
-            <LayoutGroup id="skills-rotating-showcase">
-              <div className="grid grid-cols-2 gap-6 items-stretch">
-                <AnimatePresence
-                  mode="popLayout"
-                  initial={false}
-                  custom={{ direction, reduced: prefersReducedMotion }}
-                >
-                  {visiblePair.map(([category, items], slotIdx) => (
-                    <SkillCategoryCard
-                      key={category}
-                      category={category}
-                      items={items}
-                      slotClass={SLOT_CLASSES[slotIdx]}
-                      isMobile={false}
-                      direction={direction}
-                      prefersReducedMotion={prefersReducedMotion}
-                    />
-                  ))}
-                </AnimatePresence>
-              </div>
-            </LayoutGroup>
-          </div>
-        </div>
+          {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
+          <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Skills categories"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl [perspective:1200px]"
+          >
+            {/* Mobile (< md): 1 card rotational deck */}
+            <div className="md:hidden overflow-hidden">
+              <AnimatePresence
+                mode="wait"
+                initial={false}
+                custom={{ direction, reduced: prefersReducedMotion }}
+              >
+                <SkillCategoryCard
+                  key={`mobile-${categories[safeIndex][0]}`}
+                  category={categories[safeIndex][0]}
+                  items={categories[safeIndex][1]}
+                  isMobile
+                  direction={direction}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </AnimatePresence>
+            </div>
 
-        <CarouselControls
-          canScrollLeft={total > 1}
-          canScrollRight={total > 1}
-          activePage={safeIndex}
-          pageCount={total}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onSelectPage={goToIndex}
-          labelPrefix="skills"
-        />
-      </motion.div>
+            {/* Desktop (md+): 2 rotating skill category cards */}
+            <div className="hidden md:block">
+              <LayoutGroup id="skills-rotating-showcase">
+                <div className="grid grid-cols-2 gap-6 items-stretch">
+                  <AnimatePresence
+                    mode="popLayout"
+                    initial={false}
+                    custom={{ direction, reduced: prefersReducedMotion }}
+                  >
+                    {visiblePair.map(([category, items], slotIdx) => (
+                      <SkillCategoryCard
+                        key={category}
+                        category={category}
+                        items={items}
+                        slotClass={SLOT_CLASSES[slotIdx]}
+                        isMobile={false}
+                        direction={direction}
+                        prefersReducedMotion={prefersReducedMotion}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </LayoutGroup>
+            </div>
+          </div>
+
+          <CarouselControls
+            canScrollLeft={total > 1}
+            canScrollRight={total > 1}
+            activePage={safeIndex}
+            pageCount={total}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            onSelectPage={goToIndex}
+            labelPrefix="skills"
+          />
+        </motion.div>
+      </div>
     </section>
   );
 };

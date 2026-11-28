@@ -16,7 +16,7 @@ const SLOT_CLASSES = [
 ] as const;
 
 const Projects = () => {
-  const { ref, isVisible } = useScrollAnimation(0.1);
+  const { ref: revealRef, isVisible } = useScrollAnimation(0.05);
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const prefersReducedMotion = Boolean(useReducedMotion());
@@ -26,6 +26,9 @@ const Projects = () => {
   const total = filteredProjects.length;
 
   const {
+    trackRef,
+    stickyRef,
+    scrollRunwayStyle,
     safeIndex: safeActiveIndex,
     direction,
     handleNext,
@@ -36,7 +39,7 @@ const Projects = () => {
     handleTouchStart,
     handleTouchEnd,
     handleWheel,
-  } = useRotatingCarousel(total);
+  } = useRotatingCarousel(total, 280);
 
   const activeTheme = filteredProjects[safeActiveIndex]?.theme ?? projects[0].theme;
   const accentText = isDark ? activeTheme.accentTextDark : activeTheme.accentTextLight;
@@ -78,148 +81,155 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-6xl py-8 sm:py-10"
+      ref={trackRef}
+      style={scrollRunwayStyle}
+      className="relative mx-auto max-w-6xl"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
+      <div
+        ref={stickyRef}
+        className="sticky top-[60px] sm:top-[72px] py-3 sm:py-5"
       >
-        <div className="mb-6 sm:mb-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Featured{" "}
-            <span style={{ color: accentText }} className="transition-colors duration-500">
-              Projects
-            </span>
-          </h2>
-          <div
-            style={{
-              backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
-            }}
-            className="w-20 h-1.5 rounded-full mx-auto mb-4 transition-all duration-500"
-          />
-          <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
-            Production web applications with full-stack architecture and live deployments
-          </p>
-        </div>
-
-        {/* Projects Showcase: Mobile Single-Card Carousel + Desktop/Tablet Asymmetric 3-Card Rotation */}
-        <div
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Featured projects showcase"
-          onKeyDown={handleRegionKeyDown}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onWheel={handleWheel}
-          className={`relative focus:outline-none rounded-2xl ${
-            total > 1 ? "md:px-12" : ""
-          }`}
+        <motion.div
+          ref={revealRef as React.RefObject<HTMLDivElement>}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
         >
-          {/* Mobile (< md): Only 1 consistent project card visible at a time */}
-          {total > 0 && (
-            <div className="md:hidden overflow-hidden">
-              <AnimatePresence
-                mode="wait"
-                initial={false}
-                custom={{ direction, reduced: prefersReducedMotion }}
-              >
-                <ProjectCard
-                  key={`mobile-${filteredProjects[safeActiveIndex].title}`}
-                  project={filteredProjects[safeActiveIndex]}
-                  projectNumber={String(
-                    projects.findIndex(
-                      (p) => p.title === filteredProjects[safeActiveIndex].title
-                    ) + 1
-                  ).padStart(2, "0")}
-                  variant="mobile"
-                  direction={direction}
-                  prefersReducedMotion={prefersReducedMotion}
-                  activeTheme={activeTheme}
-                  isDark={isDark}
-                  onViewProject={() =>
-                    setSelectedProject(filteredProjects[safeActiveIndex])
-                  }
-                />
-              </AnimatePresence>
-            </div>
-          )}
+          <div className="mb-4 sm:mb-5 text-center">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+              Featured{" "}
+              <span style={{ color: accentText }} className="transition-colors duration-500">
+                Projects
+              </span>
+            </h2>
+            <div
+              style={{
+                backgroundImage: `linear-gradient(to right, ${activeTheme.accent}, ${activeTheme.accentSecondary})`,
+              }}
+              className="w-20 h-1.5 rounded-full mx-auto mb-3 transition-all duration-500"
+            />
+            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              Production web applications with full-stack architecture and live deployments
+            </p>
+          </div>
 
-          {/* Desktop & Tablet (md+): Asymmetric 3-project rotation with side center arrows */}
-          <div className="hidden md:block">
-            {total > 1 && (
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Previous project"
-                style={{ borderColor: `${activeTheme.accent}55` }}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                <ChevronLeft size={22} />
-              </button>
-            )}
-
-            <LayoutGroup id="projects-asymmetric-showcase">
-              <div
-                className={`grid grid-cols-1 gap-5 lg:gap-6 ${
-                  total === 1
-                    ? "md:grid-cols-1 max-w-3xl mx-auto"
-                    : "md:grid-cols-[1.45fr_1fr] lg:grid-cols-[1.55fr_1fr] md:grid-rows-2 md:items-stretch"
-                }`}
-              >
+          {/* Projects Showcase: Mobile Single-Card Carousel + Desktop/Tablet Asymmetric 3-Card Rotation */}
+          <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Featured projects showcase"
+            onKeyDown={handleRegionKeyDown}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
+            className={`relative focus:outline-none rounded-2xl ${
+              total > 1 ? "md:px-12" : ""
+            }`}
+          >
+            {/* Mobile (< md): Only 1 consistent project card visible at a time */}
+            {total > 0 && (
+              <div className="md:hidden overflow-hidden">
                 <AnimatePresence
-                  mode="popLayout"
+                  mode="wait"
                   initial={false}
                   custom={{ direction, reduced: prefersReducedMotion }}
                 >
-                  {visibleSlots.map(({ project, offset, originalNumber, variant, slotClass }) => (
-                    <ProjectCard
-                      key={project.title}
-                      project={project}
-                      projectNumber={originalNumber}
-                      variant={variant}
-                      slotClass={slotClass}
-                      direction={direction}
-                      prefersReducedMotion={prefersReducedMotion}
-                      activeTheme={activeTheme}
-                      isDark={isDark}
-                      onViewProject={() => setSelectedProject(project)}
-                      onPromote={offset > 0 ? () => handlePromoteOffset(offset) : undefined}
-                    />
-                  ))}
+                  <ProjectCard
+                    key={`mobile-${filteredProjects[safeActiveIndex].title}`}
+                    project={filteredProjects[safeActiveIndex]}
+                    projectNumber={String(
+                      projects.findIndex(
+                        (p) => p.title === filteredProjects[safeActiveIndex].title
+                      ) + 1
+                    ).padStart(2, "0")}
+                    variant="mobile"
+                    direction={direction}
+                    prefersReducedMotion={prefersReducedMotion}
+                    activeTheme={activeTheme}
+                    isDark={isDark}
+                    onViewProject={() =>
+                      setSelectedProject(filteredProjects[safeActiveIndex])
+                    }
+                  />
                 </AnimatePresence>
               </div>
-            </LayoutGroup>
-
-            {total > 1 && (
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Next project"
-                style={{ borderColor: `${activeTheme.accent}55` }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                <ChevronRight size={22} />
-              </button>
             )}
-          </div>
-        </div>
 
-        {/* Indicator Dots Wrapped by Left & Right Arrows */}
-        <CarouselControls
-          canScrollLeft={total > 1}
-          canScrollRight={total > 1}
-          activePage={safeActiveIndex}
-          pageCount={total}
-          onPrev={handlePrev}
-          onNext={handleNext}
-          onSelectPage={goToIndex}
-          labelPrefix="projects"
-          accent={activeTheme.accent}
-          accentSecondary={activeTheme.accentSecondary}
-        />
-      </motion.div>
+            {/* Desktop & Tablet (md+): Asymmetric 3-project rotation with side center arrows */}
+            <div className="hidden md:block">
+              {total > 1 && (
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Previous project"
+                  style={{ borderColor: `${activeTheme.accent}55` }}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  <ChevronLeft size={22} />
+                </button>
+              )}
+
+              <LayoutGroup id="projects-asymmetric-showcase">
+                <div
+                  className={`grid grid-cols-1 gap-5 lg:gap-6 ${
+                    total === 1
+                      ? "md:grid-cols-1 max-w-3xl mx-auto"
+                      : "md:grid-cols-[1.45fr_1fr] lg:grid-cols-[1.55fr_1fr] md:grid-rows-2 md:items-stretch"
+                  }`}
+                >
+                  <AnimatePresence
+                    mode="popLayout"
+                    initial={false}
+                    custom={{ direction, reduced: prefersReducedMotion }}
+                  >
+                    {visibleSlots.map(({ project, offset, originalNumber, variant, slotClass }) => (
+                      <ProjectCard
+                        key={project.title}
+                        project={project}
+                        projectNumber={originalNumber}
+                        variant={variant}
+                        slotClass={slotClass}
+                        direction={direction}
+                        prefersReducedMotion={prefersReducedMotion}
+                        activeTheme={activeTheme}
+                        isDark={isDark}
+                        onViewProject={() => setSelectedProject(project)}
+                        onPromote={offset > 0 ? () => handlePromoteOffset(offset) : undefined}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </LayoutGroup>
+
+              {total > 1 && (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Next project"
+                  style={{ borderColor: `${activeTheme.accent}55` }}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  <ChevronRight size={22} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Indicator Dots Wrapped by Left & Right Arrows */}
+          <CarouselControls
+            canScrollLeft={total > 1}
+            canScrollRight={total > 1}
+            activePage={safeActiveIndex}
+            pageCount={total}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            onSelectPage={goToIndex}
+            labelPrefix="projects"
+            accent={activeTheme.accent}
+            accentSecondary={activeTheme.accentSecondary}
+          />
+        </motion.div>
+      </div>
 
       {/* Project Case Study Modal */}
       <AnimatePresence>

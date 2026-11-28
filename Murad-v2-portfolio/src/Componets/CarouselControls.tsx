@@ -28,7 +28,7 @@ const CarouselControls = ({
   if (pageCount <= 1) return null;
 
   return (
-    <div className="mt-7 flex items-center justify-center gap-4">
+    <div className="mt-5 flex items-center justify-center gap-4">
       <button
         type="button"
         onClick={onPrev}
