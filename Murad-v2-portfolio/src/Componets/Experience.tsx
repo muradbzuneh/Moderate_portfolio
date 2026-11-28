@@ -3,7 +3,6 @@ import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useRotatingCarousel } from "../hooks/useRotatingCarousel";
 import CarouselControls from "./CarouselControls";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion, type Variants } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FiArrowUpRight } from "react-icons/fi";
 
 const desktopCardVariants: Variants = {
@@ -68,28 +67,28 @@ const CredentialCard = ({
             }
       }
       whileHover={prefersReducedMotion ? undefined : { y: -4 }}
-      className={`${slotClass} group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-xl shadow-cyan-500/5 hover:border-cyan-500/50 transition-colors flex flex-col justify-between`}
+      className={`${slotClass} group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800/90 bg-white/85 dark:bg-[#0b182e]/90 backdrop-blur-md shadow-xl shadow-emerald-500/5 hover:border-emerald-400/60 transition-colors flex flex-col justify-between`}
     >
       <div>
-        {/* Responsive Credential Image */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+        {/* Responsive Credential Image harmonized with first project midnight-navy palette */}
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#0b182e]">
           <img
             src={item.image}
             alt={item.title}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover brightness-[0.94] contrast-[1.04] transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/90 via-[#0b182e]/25 to-[#0b182e]/15" />
 
-          <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950/80 border border-cyan-500/35 text-cyan-400 backdrop-blur-md">
+          <div className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#0b182e]/85 border border-emerald-400/40 text-emerald-400 backdrop-blur-md">
             <Icon className="text-xl" />
           </div>
 
           <div className="absolute top-3 right-3 flex flex-wrap items-center justify-end gap-1.5">
-            <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-950/80 text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
+            <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#0b182e]/85 text-emerald-300 border border-emerald-400/35 backdrop-blur-md">
               {item.badge}
             </span>
-            <span className="hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-medium bg-slate-950/75 text-slate-200 border border-white/15 backdrop-blur-md">
+            <span className="hidden sm:inline-block px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#0b182e]/80 text-amber-200 border border-amber-400/25 backdrop-blur-md">
               {item.period}
             </span>
           </div>
@@ -97,14 +96,14 @@ const CredentialCard = ({
 
         {/* Card Body */}
         <div className="p-5 sm:p-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
             {item.subtitle}
           </p>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2.5">
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2.5 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
             {item.title}
           </h3>
 
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
             {item.description}
           </p>
         </div>
@@ -115,7 +114,7 @@ const CredentialCard = ({
           {item.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80"
+              className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25"
             >
               {tag}
             </span>
@@ -127,7 +126,7 @@ const CredentialCard = ({
             href={item.actionHref}
             target={item.external ? "_blank" : undefined}
             rel={item.external ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-amber-500 dark:hover:text-amber-300 transition-colors"
           >
             <span>{item.actionLabel}</span>
             <FiArrowUpRight size={17} />
@@ -146,7 +145,6 @@ const Experience = () => {
   const {
     safeIndex,
     direction,
-   
     handleNext,
     handlePrev,
     goToIndex,
@@ -172,32 +170,11 @@ const Experience = () => {
         animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.7 }}
       >
-        <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-              Achievements & <span className="text-cyan-500 dark:text-cyan-400">Credentials</span>
-            </h2>
-            <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
-          </div>
-
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous achievement"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next achievement"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+            Achievements & <span className="text-emerald-500 dark:text-emerald-400">Credentials</span>
+          </h2>
+          <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full" />
         </div>
 
         {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
@@ -210,7 +187,7 @@ const Experience = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
-          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl [perspective:1200px]"
+          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-2xl [perspective:1200px]"
         >
           {/* Mobile (< md): 1 card rotational deck */}
           <div className="md:hidden overflow-hidden">

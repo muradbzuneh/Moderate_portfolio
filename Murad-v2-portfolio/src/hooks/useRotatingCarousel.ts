@@ -33,6 +33,15 @@ export function useRotatingCarousel(total: number) {
     [safeIndex, total]
   );
 
+  const promoteOffset = useCallback(
+    (offset: number) => {
+      if (total <= 1) return;
+      setDirection(1);
+      setActiveIndex((prev) => (prev + offset) % total);
+    },
+    [total]
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "ArrowRight") {
@@ -81,17 +90,13 @@ export function useRotatingCarousel(total: number) {
     [handleNext, handlePrev, total]
   );
 
-  const counterText = `${String(safeIndex + 1).padStart(2, "0")} / ${String(
-    Math.max(1, total)
-  ).padStart(2, "0")}`;
-
   return {
     safeIndex,
     direction,
-    counterText,
     handleNext,
     handlePrev,
     goToIndex,
+    promoteOffset,
     handleKeyDown,
     handleTouchStart,
     handleTouchEnd,

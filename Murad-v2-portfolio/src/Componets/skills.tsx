@@ -3,7 +3,6 @@ import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useRotatingCarousel } from "../hooks/useRotatingCarousel";
 import CarouselControls from "./CarouselControls";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion, type Variants } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type SkillEntry = (typeof skills)[keyof typeof skills][number];
 
@@ -120,7 +119,6 @@ const Skills = () => {
   const {
     safeIndex,
     direction,
-    counterText,
     handleNext,
     handlePrev,
     goToIndex,
@@ -146,32 +144,11 @@ const Skills = () => {
         animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
       >
-        <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-              Skills & <span className="text-cyan-500 dark:text-cyan-400">Expertise</span>
-            </h2>
-            <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
-          </div>
-
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous skills category"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next skills category"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
+            Skills & <span className="text-cyan-500 dark:text-cyan-400">Expertise</span>
+          </h2>
+          <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
         </div>
 
         {/* Rotational Showcase: 1-card deck on Mobile, 2-card rotating pair on Desktop */}
@@ -239,7 +216,6 @@ const Skills = () => {
           onNext={handleNext}
           onSelectPage={goToIndex}
           labelPrefix="skills"
-          counterText={counterText}
         />
       </motion.div>
     </section>

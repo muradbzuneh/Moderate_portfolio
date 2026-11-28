@@ -1,12 +1,12 @@
 import { projects, type ProjectItem } from "../data/project";
 import ProjectCard from "./projectCard";
+import CarouselControls from "./CarouselControls";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRotatingCarousel } from "../hooks/useRotatingCarousel";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-motion";
 import { FiGithub, FiExternalLink, FiX, FiCheckCircle } from "react-icons/fi";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-
 
 const SLOT_CLASSES = [
   "md:col-start-1 md:row-start-1 md:row-span-2",
@@ -17,34 +17,23 @@ const SLOT_CLASSES = [
 const Projects = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const prefersReducedMotion = Boolean(useReducedMotion());
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
-
-  const touchStartX = useRef<number | null>(null);
-  const lastWheelAt = useRef(0);
 
   const filteredProjects = projects;
   const total = filteredProjects.length;
-  const safeActiveIndex = total > 0 ? activeIndex % total : 0;
 
-  const handleNext = useCallback(() => {
-    if (total <= 1) return;
-    setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % total);
-  }, [total]);
-
-  const handlePrev = useCallback(() => {
-    if (total <= 1) return;
-    setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
-
-  const handlePromoteOffset = (offset: number) => {
-    if (total <= 1) return;
-    setDirection(1);
-    setActiveIndex((prev) => (prev + offset) % total);
-  };
+  const {
+    safeIndex: safeActiveIndex,
+    direction,
+    handleNext,
+    handlePrev,
+    goToIndex,
+    promoteOffset: handlePromoteOffset,
+    handleKeyDown: handleRegionKeyDown,
+    handleTouchStart,
+    handleTouchEnd,
+    handleWheel,
+  } = useRotatingCarousel(total);
 
   useEffect(() => {
     if (!selectedProject) return;
@@ -58,45 +47,6 @@ const Projects = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedProject]);
-
-  const handleRegionKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "ArrowRight") {
-      e.preventDefault();
-      handleNext();
-    } else if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      handlePrev();
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartX.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-
-    if (Math.abs(deltaX) > 45) {
-      if (deltaX < 0) handleNext();
-      else handlePrev();
-    }
-  };
-
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (total <= 1) return;
-    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 25) {
-      return;
-    }
-
-    const now = Date.now();
-    if (now - lastWheelAt.current < 420) return;
-    lastWheelAt.current = now;
-
-    if (e.deltaX > 0) handleNext();
-    else handlePrev();
-  };
 
   const visibleCount = Math.min(3, total);
   const visibleSlots = Array.from({ length: visibleCount }, (_, offset) => {
@@ -119,10 +69,6 @@ const Projects = () => {
     };
   });
 
-  const counterText = `${String(safeActiveIndex + 1).padStart(2, "0")} / ${String(
-    total
-  ).padStart(2, "0")}`;
-
   return (
     <section
       id="projects"
@@ -136,9 +82,9 @@ const Projects = () => {
       >
         <div className="mb-6 sm:mb-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
-            Featured <span className="text-cyan-500 dark:text-cyan-400">Projects</span>
+            Featured <span className="text-emerald-500 dark:text-emerald-400">Projects</span>
           </h2>
-          <div className="w-20 h-1.5 bg-cyan-400 rounded-full mx-auto mb-4" />
+          <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full mx-auto mb-4" />
           <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
             Production web applications with full-stack architecture and live deployments
           </p>
@@ -153,7 +99,7 @@ const Projects = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
-          className={`relative focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl ${
+          className={`relative focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-2xl ${
             total > 1 ? "md:px-12" : ""
           }`}
         >
@@ -191,7 +137,7 @@ const Projects = () => {
                 type="button"
                 onClick={handlePrev}
                 aria-label="Previous project"
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-[#0b182e]/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg"
               >
                 <ChevronLeft size={22} />
               </button>
@@ -232,7 +178,7 @@ const Projects = () => {
                 type="button"
                 onClick={handleNext}
                 aria-label="Next project"
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-[#0b182e]/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg"
               >
                 <ChevronRight size={22} />
               </button>
@@ -240,62 +186,17 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* Bottom Counter, Mobile Horizontal Arrows & Indicator Dots */}
-        {total > 1 && (
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Previous project"
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm"
-              >
-                <ChevronLeft size={20} />
-              </button>
-
-              <span
-                className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold tracking-wider text-slate-700 dark:text-slate-200 tabular-nums"
-                aria-live="polite"
-              >
-                {counterText}
-              </span>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Next project"
-                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            <div className="flex items-center justify-center gap-2" role="tablist" aria-label="Project slides">
-              {filteredProjects.map((project, idx) => {
-                const isActive = idx === safeActiveIndex;
-                return (
-                  <button
-                    key={project.title}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-label={`Show project ${idx + 1}: ${project.title}`}
-                    onClick={() => {
-                      if (idx === safeActiveIndex) return;
-                      setDirection(idx > safeActiveIndex ? 1 : -1);
-                      setActiveIndex(idx);
-                    }}
-                    className={`h-2.5 rounded-full transition-all duration-300 ${
-                      isActive
-                        ? "w-7 bg-cyan-500 shadow-sm shadow-cyan-500/40"
-                        : "w-2.5 bg-slate-300 dark:bg-slate-700 hover:bg-cyan-400/70"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Indicator Dots Wrapped by Left & Right Arrows */}
+        <CarouselControls
+          canScrollLeft={total > 1}
+          canScrollRight={total > 1}
+          activePage={safeActiveIndex}
+          pageCount={total}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onSelectPage={goToIndex}
+          labelPrefix="projects"
+        />
       </motion.div>
 
       {/* Project Case Study Modal */}
@@ -317,26 +218,26 @@ const Projects = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.25 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl"
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0b182e] border border-slate-200 dark:border-slate-800 shadow-2xl"
             >
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
                 aria-label="Close project details"
-                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/75 text-white hover:bg-cyan-500 hover:text-slate-950 transition-colors"
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[#0b182e]/85 text-white hover:bg-emerald-400 hover:text-slate-950 transition-colors"
               >
                 <FiX size={20} />
               </button>
 
-              <div className="relative h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+              <div className="relative h-64 sm:h-72 w-full bg-[#0b182e] overflow-hidden">
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover brightness-[0.94] contrast-[1.04]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b182e]/95 via-[#0b182e]/25 to-transparent" />
                 <div className="absolute bottom-4 left-6 right-6">
-                  <span className="inline-block px-3 py-1 mb-2 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 backdrop-blur-md">
+                  <span className="inline-block px-3 py-1 mb-2 rounded-full text-xs font-semibold bg-[#0b182e]/80 text-emerald-300 border border-emerald-400/35 backdrop-blur-md">
                     {selectedProject.category}
                   </span>
                   <h3
@@ -350,7 +251,7 @@ const Projects = () => {
 
               <div className="p-6 sm:p-8 space-y-6">
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
                     Overview
                   </h4>
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -359,7 +260,7 @@ const Projects = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-3">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3">
                     Key Capabilities & Stack Highlights
                   </h4>
                   <ul className="space-y-2.5">
@@ -368,7 +269,7 @@ const Projects = () => {
                         key={item}
                         className="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300"
                       >
-                        <FiCheckCircle className="text-cyan-500 shrink-0 mt-0.5" size={16} />
+                        <FiCheckCircle className="text-emerald-500 shrink-0 mt-0.5" size={16} />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -376,14 +277,14 @@ const Projects = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-3">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3">
                     Technologies Used
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.tech.map((item) => (
                       <span
                         key={item}
-                        className="px-3 py-1 text-xs font-semibold rounded-full bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border border-cyan-500/20"
+                        className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25"
                       >
                         {item}
                       </span>
@@ -396,7 +297,7 @@ const Projects = () => {
                     href={selectedProject.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                   >
                     <FiGithub size={18} />
                     <span>View Source Code</span>
@@ -407,7 +308,7 @@ const Projects = () => {
                       href={selectedProject.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/25 transition-colors"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-500 hover:to-cyan-500 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/25 transition-colors"
                     >
                       <FiExternalLink size={18} />
                       <span>Open Live Demo</span>
