@@ -35,7 +35,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative mx-auto flex min-h-[85vh] max-w-6xl flex-col items-center justify-center py-16 sm:py-20 text-center"
+      className="relative mx-auto flex min-h-[72vh] max-w-6xl flex-col items-center justify-center py-8 sm:py-10 text-center"
     >
       {/* Availability Badge */}
       <motion.div

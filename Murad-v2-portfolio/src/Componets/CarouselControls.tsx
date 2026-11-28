@@ -9,6 +9,7 @@ type CarouselControlsProps = {
   onNext: () => void;
   onSelectPage: (index: number) => void;
   labelPrefix: string;
+  counterText?: string;
 };
 
 const CarouselControls = ({
@@ -20,18 +21,40 @@ const CarouselControls = ({
   onNext,
   onSelectPage,
   labelPrefix,
+  counterText,
 }: CarouselControlsProps) => {
   return (
-    <div className="mt-8 flex items-center justify-center gap-4">
-      <button
-        type="button"
-        onClick={onPrev}
-        disabled={!canScrollLeft}
-        aria-label={`Previous ${labelPrefix}`}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:border-slate-300 dark:disabled:hover:border-slate-700"
-      >
-        <ChevronLeft size={20} />
-      </button>
+    <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onPrev}
+          disabled={!canScrollLeft}
+          aria-label={`Previous ${labelPrefix}`}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/85 dark:bg-slate-900/85 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm disabled:opacity-35 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        {counterText && (
+          <span
+            className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold tracking-wider text-slate-700 dark:text-slate-200 tabular-nums"
+            aria-live="polite"
+          >
+            {counterText}
+          </span>
+        )}
+
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={!canScrollRight}
+          aria-label={`Next ${labelPrefix}`}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/85 dark:bg-slate-900/85 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm disabled:opacity-35 disabled:cursor-not-allowed"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
 
       {pageCount > 1 && (
         <div className="flex items-center gap-2" role="tablist" aria-label={`${labelPrefix} pages`}>
@@ -55,16 +78,6 @@ const CarouselControls = ({
           })}
         </div>
       )}
-
-      <button
-        type="button"
-        onClick={onNext}
-        disabled={!canScrollRight}
-        aria-label={`Next ${labelPrefix}`}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all shadow-sm disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:border-slate-300 dark:disabled:hover:border-slate-700"
-      >
-        <ChevronRight size={20} />
-      </button>
     </div>
   );
 };

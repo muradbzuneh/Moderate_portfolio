@@ -1,6 +1,7 @@
 
 import { About } from "../Componets/About"
 import Contact from "../Componets/Contact"
+import Experience from "../Componets/Experience"
 import { Hero } from "../Componets/Hero"
 import Navbar from "../Componets/Navbar"
 import Projects from "../Componets/Project"
@@ -15,6 +16,7 @@ export default function Home() {
         <About />
         <Skills />
         <Projects />
+        <Experience />
         <Contact />
       </main>
     </>

@@ -70,7 +70,7 @@ const Contact = () => {
     <>
       <section
         id="contact"
-        className="relative my-24 rounded-3xl bg-slate-100 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700/60 text-slate-900 dark:text-white flex items-center justify-center px-4 sm:px-8 py-20 overflow-hidden shadow-2xl"
+        className="relative my-8 sm:my-10 rounded-3xl bg-slate-100 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700/60 text-slate-900 dark:text-white flex items-center justify-center px-4 sm:px-8 py-10 sm:py-12 overflow-hidden shadow-2xl"
       >
         <div className="w-full max-w-4xl relative z-10">
           <motion.div
@@ -78,7 +78,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={headingVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
             <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">
               Let's <span className="text-cyan-400">Connect</span>

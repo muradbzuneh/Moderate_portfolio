@@ -37,7 +37,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 py-10 mt-12">
+    <footer className="border-t border-slate-200 dark:border-slate-800 py-6 mt-4">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 md:flex-row md:justify-between">
         <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
           © {new Date().getFullYear()} Murad Bzuneh. All rights reserved.

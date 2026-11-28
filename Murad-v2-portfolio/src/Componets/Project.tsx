@@ -6,7 +6,7 @@ import { motion, AnimatePresence, LayoutGroup, useReducedMotion } from "framer-m
 import { FiGithub, FiExternalLink, FiX, FiCheckCircle } from "react-icons/fi";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const CATEGORIES = ["All", "React", "Next.js", "TypeScript", "Express", "PostgreSQL"];
+
 
 const SLOT_CLASSES = [
   "md:col-start-1 md:row-start-1 md:row-span-2",
@@ -17,7 +17,6 @@ const SLOT_CLASSES = [
 const Projects = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
   const prefersReducedMotion = Boolean(useReducedMotion());
-  const [filter, setFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
@@ -25,21 +24,9 @@ const Projects = () => {
   const touchStartX = useRef<number | null>(null);
   const lastWheelAt = useRef(0);
 
-  const filteredProjects =
-    filter === "All"
-      ? projects
-      : projects.filter((project) =>
-          project.tech.some((t) => t.toLowerCase() === filter.toLowerCase())
-        );
-
+  const filteredProjects = projects;
   const total = filteredProjects.length;
   const safeActiveIndex = total > 0 ? activeIndex % total : 0;
-
-  const handleFilterChange = (category: string) => {
-    setFilter(category);
-    setDirection(1);
-    setActiveIndex(0);
-  };
 
   const handleNext = useCallback(() => {
     if (total <= 1) return;
@@ -140,14 +127,14 @@ const Projects = () => {
     <section
       id="projects"
       ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-6xl py-24"
+      className="mx-auto max-w-6xl py-8 sm:py-10"
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.8 }}
       >
-        <div className="mb-10 text-center">
+        <div className="mb-6 sm:mb-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
             Featured <span className="text-cyan-500 dark:text-cyan-400">Projects</span>
           </h2>
@@ -157,97 +144,131 @@ const Projects = () => {
           </p>
         </div>
 
-        {/* Filter buttons (cleanly centered at top) */}
-        <div className="mb-10 flex flex-wrap justify-center gap-2 sm:gap-3">
-          {CATEGORIES.map((category) => (
-            <motion.button
-              key={category}
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              onClick={() => handleFilterChange(category)}
-              className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
-                filter === category
-                  ? "bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700"
-              }`}
-            >
-              {category}
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Asymmetric Three-Project Rotating Showcase with Left/Right Center Arrows */}
+        {/* Projects Showcase: Mobile Single-Card Carousel + Desktop/Tablet Asymmetric 3-Card Rotation */}
         <div
           role="region"
           aria-roledescription="carousel"
           aria-label="Featured projects showcase"
-          tabIndex={0}
           onKeyDown={handleRegionKeyDown}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
           className={`relative focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl ${
-            total > 1 ? "sm:px-12" : ""
+            total > 1 ? "md:px-12" : ""
           }`}
         >
-          {total > 1 && (
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous project"
-              className="absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
-            >
-              <ChevronLeft size={22} />
-            </button>
-          )}
-
-          <LayoutGroup id="projects-asymmetric-showcase">
-            <div
-              className={`grid grid-cols-1 gap-5 lg:gap-6 ${
-                total === 1
-                  ? "md:grid-cols-1 max-w-3xl mx-auto"
-                  : "md:grid-cols-[1.45fr_1fr] lg:grid-cols-[1.55fr_1fr] md:grid-rows-2 md:items-stretch"
-              }`}
-            >
-              <AnimatePresence mode="popLayout" initial={false} custom={{ direction, reduced: prefersReducedMotion }}>
-                {visibleSlots.map(({ project, offset, originalNumber, variant, slotClass }) => (
-                  <ProjectCard
-                    key={project.title}
-                    project={project}
-                    projectNumber={originalNumber}
-                    variant={variant}
-                    slotClass={slotClass}
-                    direction={direction}
-                    prefersReducedMotion={prefersReducedMotion}
-                    onViewProject={() => setSelectedProject(project)}
-                    onPromote={offset > 0 ? () => handlePromoteOffset(offset) : undefined}
-                  />
-                ))}
+          {/* Mobile (< md): Only 1 consistent project card visible at a time */}
+          {total > 0 && (
+            <div className="md:hidden overflow-hidden">
+              <AnimatePresence
+                mode="wait"
+                initial={false}
+                custom={{ direction, reduced: prefersReducedMotion }}
+              >
+                <ProjectCard
+                  key={`mobile-${filteredProjects[safeActiveIndex].title}`}
+                  project={filteredProjects[safeActiveIndex]}
+                  projectNumber={String(
+                    projects.findIndex(
+                      (p) => p.title === filteredProjects[safeActiveIndex].title
+                    ) + 1
+                  ).padStart(2, "0")}
+                  variant="mobile"
+                  direction={direction}
+                  prefersReducedMotion={prefersReducedMotion}
+                  onViewProject={() =>
+                    setSelectedProject(filteredProjects[safeActiveIndex])
+                  }
+                />
               </AnimatePresence>
             </div>
-          </LayoutGroup>
-
-          {total > 1 && (
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next project"
-              className="absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
-            >
-              <ChevronRight size={22} />
-            </button>
           )}
+
+          {/* Desktop & Tablet (md+): Asymmetric 3-project rotation with side center arrows */}
+          <div className="hidden md:block">
+            {total > 1 && (
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label="Previous project"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
+              >
+                <ChevronLeft size={22} />
+              </button>
+            )}
+
+            <LayoutGroup id="projects-asymmetric-showcase">
+              <div
+                className={`grid grid-cols-1 gap-5 lg:gap-6 ${
+                  total === 1
+                    ? "md:grid-cols-1 max-w-3xl mx-auto"
+                    : "md:grid-cols-[1.45fr_1fr] lg:grid-cols-[1.55fr_1fr] md:grid-rows-2 md:items-stretch"
+                }`}
+              >
+                <AnimatePresence
+                  mode="popLayout"
+                  initial={false}
+                  custom={{ direction, reduced: prefersReducedMotion }}
+                >
+                  {visibleSlots.map(({ project, offset, originalNumber, variant, slotClass }) => (
+                    <ProjectCard
+                      key={project.title}
+                      project={project}
+                      projectNumber={originalNumber}
+                      variant={variant}
+                      slotClass={slotClass}
+                      direction={direction}
+                      prefersReducedMotion={prefersReducedMotion}
+                      onViewProject={() => setSelectedProject(project)}
+                      onPromote={offset > 0 ? () => handlePromoteOffset(offset) : undefined}
+                    />
+                  ))}
+                </AnimatePresence>
+              </div>
+            </LayoutGroup>
+
+            {total > 1 && (
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label="Next project"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-lg"
+              >
+                <ChevronRight size={22} />
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Bottom Counter & Indicator Dots */}
+        {/* Bottom Counter, Mobile Horizontal Arrows & Indicator Dots */}
         {total > 1 && (
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <span
-              className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold tracking-wider text-slate-700 dark:text-slate-200 tabular-nums"
-              aria-live="polite"
-            >
-              {counterText}
-            </span>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label="Previous project"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <span
+                className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold tracking-wider text-slate-700 dark:text-slate-200 tabular-nums"
+                aria-live="polite"
+              >
+                {counterText}
+              </span>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label="Next project"
+                className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:bg-cyan-500 hover:text-slate-950 transition-all shadow-sm"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
 
             <div className="flex items-center justify-center gap-2" role="tablist" aria-label="Project slides">
               {filteredProjects.map((project, idx) => {

@@ -27,21 +27,21 @@ export const About = () => {
     <section
       id="about"
       ref={ref as React.RefObject<HTMLElement>}
-      className="mx-auto max-w-6xl py-24"
+      className="mx-auto max-w-6xl py-8 sm:py-10"
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-3">
             About <span className="text-cyan-400">Me</span>
           </h2>
           <div className="w-20 h-1.5 bg-cyan-400 rounded-full" />
         </div>
 
-        <div className="grid gap-6 sm:gap-8 md:grid-cols-3 mb-12">
+        <div className="grid gap-6 sm:gap-8 md:grid-cols-3 mb-8">
           {stats.map((item, index) => (
             <motion.div
               key={item.title}
